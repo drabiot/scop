@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/09/11 09:59:08 by tchartie         ###   ########.fr        #
+#    Updated: 2025/10/16 11:34:25 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,50 @@ OBJ_DIR 			=	obj/
 OBJ_NAME			=	$(SRC_NAME:.cpp=.o)
 OBJ				=	$(patsubst %, $(OBJ_DIR)%, $(OBJ_NAME))
 
-all:		$(NAME)
+all:		glfw glad glm $(NAME)
+
+glfw:
+	@if ls | grep -q "GLFW"; then \
+		echo "$(RED)GLFW Found $(BASE_COLOR)"; \
+	else \
+		echo "$(RED)GLFW Not Found $(BASE_COLOR)"; \
+		echo "$(RED)Downloading GLFW from github  $(BASE_COLOR)"; \
+		git clone https://github.com/glfw/glfw.git GLFW; \
+		echo "$(RED)Compiling GLFW $(BASE_COLOR)"; \
+		cmake -S GLFW -B GLFW/build; \
+		cmake --build GLFW/build; \
+	fi
+
+glad:
+	@if ls src | grep -q "glad"; then \
+		echo "$(RED)glad Found $(BASE_COLOR)"; \
+	else \
+		echo "$(RED)glad Not Found $(BASE_COLOR)"; \
+		echo "$(RED)Downloading glad from github  $(BASE_COLOR)"; \
+		pip install glad; \
+		git clone https://github.com/Dav1dde/glad.git glad; \
+		python -m glad --out-path=glad/build --generator=c; \
+		mkdir -p glad2; \
+		cp glad/build/include/glad/glad.h glad2/.; \
+		cp glad/build/src/glad.c glad2/.; \
+		rm -rf glad; \
+		mv glad2 glad; \
+		mv glad/glad.c glad/glad.cpp; \
+		mkdir -p src/glad; \
+		mkdir -p inc/glad; \
+		mv glad/glad.cpp src/glad/; \
+		mv glad/glad.h inc/glad/; \
+		rm -rf glad; \
+	fi
+
+glm:
+	@if ls | grep -q "glm"; then \
+		echo "$(RED)GLM Found $(BASE_COLOR)"; \
+	else \
+		echo "$(RED)GLM Not Found $(BASE_COLOR)"; \
+		echo "$(RED)Cloning GLM from github $(BASE_COLOR)"; \
+		git clone https://github.com/g-truc/glm.git glm; \
+	fi
 
 $(NAME):	$(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
@@ -65,6 +108,12 @@ fclean:	clean
 	@rm -f $(NAME)
 	@echo "$(CYAN)scop executable file cleanned! $(BASE_COLOR)"
 
+dclean: fclean
+	@rm -rf src/glad
+	@rm -rf inc/glad
+	@rm -rf GLFW
+	@rm -rf glm
+	@echo "$(GREEN)Cleaned external libraries $(BASE_COLOR)"
 
 re: 		fclean all
 
