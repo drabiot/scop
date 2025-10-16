@@ -6,11 +6,15 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/09/11 10:01:45 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/16 11:50:28 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "scop.hpp"
+
 int main (int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
 	return (0);
 }

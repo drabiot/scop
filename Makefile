@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/10/16 11:34:25 by tchartie         ###   ########.fr        #
+#    Updated: 2025/10/16 11:51:28 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,12 @@ CC 				= 	c++
 
 #=========== FLAGS ============#
 
-INC				= 	inc/
+INC_DIR			= 	inc/ \
+					./GLFW/include/GLFW/ \
+					./inc/glad/.
+
+INC_DIR			:=	$(addprefix -I, $(INC_DIR))
+
 CFLAGS 			= 	-I$(INC) -Wall -Werror -Wextra -g
 
 MAKEFLAGS		=	--no-print-directory
@@ -98,7 +103,7 @@ $(NAME):	$(OBJ)
 $(OBJ_DIR)%.o:$(SRC_DIR)%.cpp
 	@mkdir -p $(dir $@)
 	@echo "$(YELLOW)Compiling: $< $(BASE_COLOR)"
-	@$(CC) $(CFLAGS) $< -c -o $@
+	@$(CC) $(CFLAGS) $(INC_DIR) $< -c -o $@
 
 clean:
 	@rm -rf $(OBJ_DIR)
