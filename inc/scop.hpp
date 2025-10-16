@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 11:40:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/16 13:42:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 # include "glad.h"
 # include "glfw3.h"
+
+# include "color.hpp"
 
 # define AND	<<
 # define PRINT	std::cout AND

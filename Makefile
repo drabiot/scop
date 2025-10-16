@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/10/16 11:51:28 by tchartie         ###   ########.fr        #
+#    Updated: 2025/10/16 13:55:15 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,13 +20,15 @@ CC 				= 	c++
 
 #=========== FLAGS ============#
 
-INC_DIR			= 	inc/ \
-					./GLFW/include/GLFW/ \
-					./inc/glad/.
+INC_DIR			= 	./inc/ \
+						./GLFW/include/GLFW/ \
+						./inc/glad/.
+
+GLFWARCHIVE		=	GLFW/build/src/libglfw3.a
 
 INC_DIR			:=	$(addprefix -I, $(INC_DIR))
 
-CFLAGS 			= 	-I$(INC) -Wall -Werror -Wextra -g
+CFLAGS 			= 	-MP -MMD -Wall -Werror -Wextra -std=c++17
 
 MAKEFLAGS		=	--no-print-directory
 
@@ -97,7 +99,7 @@ glm:
 	fi
 
 $(NAME):	$(OBJ)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(GLFWARCHIVE) $(LDFLAGS)
 	@echo "$(GREEN)scop successfully compiled! $(BASE_COLOR)"
 
 $(OBJ_DIR)%.o:$(SRC_DIR)%.cpp
@@ -122,4 +124,4 @@ dclean: fclean
 
 re: 		fclean all
 
-.PHONY :	all clean fclean re
+.PHONY :	all glwf glad glm clean fclean dclean re
