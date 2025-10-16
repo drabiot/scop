@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scop.hpp                                           :+:      :+:    :+:   */
+/*   EBO.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:02:36 by tchartie         ###   ########.fr       */
+/*   Created: 2025/10/16 14:55:22 by tchartie          #+#    #+#             */
+/*   Updated: 2025/10/16 15:06:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCOP_HPP
-# define SCOP_HPP
+#ifndef EBO_HPP
+# define EBO_HPP
 
 # include "utils.hpp"
-# include "Shader.hpp"
-# include "VAO.hpp"
-# include "VBO.hpp"
-# include "EBO.hpp"
 
-# define WD_WIDTH 800
-# define WD_HEIGHT 800
-# define WD_NAME "scop"
+class EBO {
+	public:
+		GLuint	ID;
+		EBO(GLuint *indices, GLsizeiptr size);
 
-#endif //SCOP_HPP
+		void	Bind(void);
+		void	Unbind(void);
+		void	Delete(void);
+};
+
+#endif //EBO_HPP

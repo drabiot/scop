@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scop.hpp                                           :+:      :+:    :+:   */
+/*   VBO.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:02:36 by tchartie         ###   ########.fr       */
+/*   Created: 2025/10/16 14:51:51 by tchartie          #+#    #+#             */
+/*   Updated: 2025/10/16 15:09:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCOP_HPP
-# define SCOP_HPP
+#include "VBO.hpp"
 
-# include "utils.hpp"
-# include "Shader.hpp"
-# include "VAO.hpp"
-# include "VBO.hpp"
-# include "EBO.hpp"
+VBO::VBO(GLfloat *vertices, GLsizeiptr size) {
+	glGenBuffers(1, &ID);
+	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+}
 
-# define WD_WIDTH 800
-# define WD_HEIGHT 800
-# define WD_NAME "scop"
+void	VBO::Bind() {
+	glBindBuffer(GL_ARRAY_BUFFER, ID);
+}
 
-#endif //SCOP_HPP
+void	VBO::Unbind() {
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void	VBO::Delete() {
+	glDeleteBuffers(1, &ID);
+}

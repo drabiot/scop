@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scop.hpp                                           :+:      :+:    :+:   */
+/*   VBO.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:02:36 by tchartie         ###   ########.fr       */
+/*   Created: 2025/10/16 14:49:33 by tchartie          #+#    #+#             */
+/*   Updated: 2025/10/16 15:06:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCOP_HPP
-# define SCOP_HPP
+#ifndef VBO_HPP
+# define VBO_HPP
 
 # include "utils.hpp"
-# include "Shader.hpp"
-# include "VAO.hpp"
-# include "VBO.hpp"
-# include "EBO.hpp"
 
-# define WD_WIDTH 800
-# define WD_HEIGHT 800
-# define WD_NAME "scop"
+class VBO {
+	public:
+		GLuint	ID;
+		VBO(GLfloat *vertices, GLsizeiptr size);
 
-#endif //SCOP_HPP
+		void	Bind(void);
+		void	Unbind(void);
+		void	Delete(void);
+};
+
+#endif //VBO_HPP

@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/10/16 13:55:15 by tchartie         ###   ########.fr        #
+#    Updated: 2025/10/16 15:28:12 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,32 @@ CC 				= 	c++
 
 INC_DIR			= 	./inc/ \
 						./GLFW/include/GLFW/ \
-						./inc/glad/.
+						./inc/glad/. \
+						./src/ \
+						./glm/glm/ \
+						./glm/glm/gtc/
+
+CLASSE_H			=	Camera/ \
+						ChunkMaker/ \
+						FrameBuffer/ \
+						Texture/ \
+						Shader/ \
+						Camera/ \
+						Window/ \
+						Managers/ \
+						UI/ \
+						UI/Elements \
+						UI/Interfaces \
+						Terminal/ \
+						Scenes/ \
+						World/
 
 GLFWARCHIVE		=	GLFW/build/src/libglfw3.a
 
 INC_DIR			:=	$(addprefix -I, $(INC_DIR))
+CLASSE_H			:= $(addprefix -I./src/, $(CLASSE_H))
 
-CFLAGS 			= 	-MP -MMD -Wall -Werror -Wextra -std=c++17
+CFLAGS 			= 	-MP -MMD -Wall -Werror -Wextra -g -std=c++17
 
 MAKEFLAGS		=	--no-print-directory
 
@@ -47,7 +66,12 @@ WHITE				=	\033[0;97m
 #========== SOURCES ===========#
 
 SRC_DIR 			= 	src/
-SRC_NAME 		=	main.cpp
+SRC_NAME 		=	main.cpp \
+						glad/glad.cpp \
+						Shader.cpp \
+						VAO.cpp \
+						VBO.cpp \
+						EBO.cpp
 
 OBJ_DIR 			=	obj/
 OBJ_NAME			=	$(SRC_NAME:.cpp=.o)
@@ -105,7 +129,7 @@ $(NAME):	$(OBJ)
 $(OBJ_DIR)%.o:$(SRC_DIR)%.cpp
 	@mkdir -p $(dir $@)
 	@echo "$(YELLOW)Compiling: $< $(BASE_COLOR)"
-	@$(CC) $(CFLAGS) $(INC_DIR) $< -c -o $@
+	@$(CC) $(CFLAGS) $(CLASSE_H) $(INC_DIR) $< -c -o $@
 
 clean:
 	@rm -rf $(OBJ_DIR)

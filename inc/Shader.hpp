@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scop.hpp                                           :+:      :+:    :+:   */
+/*   Shader.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:02:36 by tchartie         ###   ########.fr       */
+/*   Created: 2025/10/16 14:31:48 by tchartie          #+#    #+#             */
+/*   Updated: 2025/10/16 15:06:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCOP_HPP
-# define SCOP_HPP
+#ifndef SHADER_HPP
+# define SHADER_HPP
 
 # include "utils.hpp"
-# include "Shader.hpp"
-# include "VAO.hpp"
-# include "VBO.hpp"
-# include "EBO.hpp"
 
-# define WD_WIDTH 800
-# define WD_HEIGHT 800
-# define WD_NAME "scop"
+str get_file_contents(const char *filename);
 
-#endif //SCOP_HPP
+class Shader {
+	public:
+		GLuint	ID;
+		Shader(const char *vertexFile, const char *fragmentFile);
+
+		void	Activate(void);
+		void	Delete(void);
+};
+
+#endif //SHADER_HPP

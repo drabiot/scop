@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   scop.hpp                                           :+:      :+:    :+:   */
+/*   VAO.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:02:36 by tchartie         ###   ########.fr       */
+/*   Created: 2025/10/16 14:58:58 by tchartie          #+#    #+#             */
+/*   Updated: 2025/10/16 15:10:04 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCOP_HPP
-# define SCOP_HPP
+#include "VAO.hpp"
 
-# include "utils.hpp"
-# include "Shader.hpp"
-# include "VAO.hpp"
-# include "VBO.hpp"
-# include "EBO.hpp"
+VAO::VAO() {
+	glGenVertexArrays(1, &ID);
+}
 
-# define WD_WIDTH 800
-# define WD_HEIGHT 800
-# define WD_NAME "scop"
+void	VAO::LinkVBO(VBO VBO, GLuint layout) {
+	VBO.Bind();
+	glVertexAttribPointer(layout, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	glEnableVertexAttribArray(layout);
+	VBO.Unbind();
+}
 
-#endif //SCOP_HPP
+void	VAO::Bind() {
+	glBindVertexArray(ID);
+}
+
+void	VAO::Unbind() {
+	glBindVertexArray(0);
+}
+
+void	VAO::Delete() {
+	glDeleteVertexArrays(1, &ID);
+}
