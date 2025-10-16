@@ -6,39 +6,49 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:39:39 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/16 18:23:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
 
-#include <cmath>
-
 // Vertices coordinates
+/*GLfloat vertices[] =
+{ //     COORDINATES     /        COLORS      /   TexCoord  //
+	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
+	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	5.0f, 0.0f,
+	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
+	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	5.0f, 0.0f,
+	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	2.5f, 5.0f
+};*/
+
 GLfloat vertices[] =
-{
-	-0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower left corner
-	0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f, // Lower right corner
-	0.0f, 0.5f * float(sqrt(3)) * 2 / 3, 0.0f, // Upper corner
-	-0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner left
-	0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f, // Inner right
-	0.0f, -0.5f * float(sqrt(3)) / 3, 0.0f // Inner down
+{ //     COORDINATES     /        COLORS      
+	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,
+	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
+	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
+	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,
+	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,
 };
 
 // Indices for vertices order
 GLuint indices[] =
 {
-	0, 3, 5, // Lower left triangle
-	3, 2, 4, // Lower right triangle
-	5, 4, 1 // Upper triangle
+	0, 1, 2,
+	0, 2, 3,
+	0, 1, 4,
+	1, 2, 4,
+	2, 3, 4,
+	3, 0, 4
 };
 
 
 int main (int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
+	
 	try {
-		(void)argc;
-		(void)argv;
 
 		//Initialize GLFW
 		glfwInit();
@@ -65,7 +75,7 @@ int main (int argc, char **argv)
 		gladLoadGL();
 		// Specify the viewport of OpenGL in the Window
 		// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
-		glViewport(0, 0, 800, 800);
+		glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 		
 		// Generates Shader object using shaders defualt.vert and default.frag
 		Shader shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
@@ -79,27 +89,51 @@ int main (int argc, char **argv)
 		EBO EBO1(indices, sizeof(indices));
 
 		// Links VBO to VAO
-		VAO1.LinkVBO(VBO1, 0);
+		VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)0);
+		VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
 		// Unbind all to prevent accidentally modifying them
 		VAO1.Unbind();
 		VBO1.Unbind();
 		EBO1.Unbind();
 		
+		float		rotation = 0.0f;
+		double	prevTime = glfwGetTime();
+
+		glEnable(GL_DEPTH_TEST);
+
 		//Main loop
 		while(!glfwWindowShouldClose(window)) {
 			// Specify the color of the background
 			glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-			// Clean the back buffer and assign the new color to it
-			glClear(GL_COLOR_BUFFER_BIT);
+			// Clean the back buffer and depth buffer
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Tell OpenGL which Shader Program we want to use
 			shaderProgram.Activate();
-			// Bind the VAO so OpenGL knows to use it
+
+			double crntTime = glfwGetTime();
+			if (crntTime - prevTime >= 1 / 60) {
+				rotation += 0.5f;
+				prevTime = crntTime;
+			}
+
+			glm::mat4 model = glm::mat4(1.0f);
+			glm::mat4 view = glm::mat4(1.0f);
+			glm::mat4 proj = glm::mat4(1.0f);
+
+			model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
+			view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
+			proj = glm::perspective(glm::radians(45.0f), (float)WD_WIDTH / WD_HEIGHT, 0.1f, 100.0f);
+
+			int	modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+			int	viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+			int	projLoc = glGetUniformLocation(shaderProgram.ID, "proj");
+			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
 			VAO1.Bind();
-			// Draw primitives, number of indices, datatype of indices, index of indices
-			glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
-			// Swap the back buffer with the front buffer
+			glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 			glfwSwapBuffers(window);
-			// Take care of all GLFW events
 			glfwPollEvents();
 		}
 

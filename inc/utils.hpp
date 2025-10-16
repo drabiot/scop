@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:36:57 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/16 17:53:49 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 # include "glfw3.h"
 
 # include "color.hpp"
+
+//TO DELETE
+#include"glm.hpp"
+#include"gtc/matrix_transform.hpp"
+#include"gtc/type_ptr.hpp"
 
 # define AND	<<
 # define PRINT	std::cout AND
