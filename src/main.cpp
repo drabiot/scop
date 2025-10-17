@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/17 15:08:19 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/17 16:55:16 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,14 @@ GLuint indices[] =
 
 int main (int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-	
+	if (argc != 2) {
+		ERROR RED ".obj file needed" CENDL;
+		return (1);
+	}
 	try {
+
+		scop data(argv[1]);
+
 
 		//Initialize GLFW
 		glfwInit();
@@ -51,9 +55,9 @@ int main (int argc, char **argv)
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		//Create a GLFW window object & protect it
-		GLFWwindow *window = glfwCreateWindow(WD_WIDTH, WD_HEIGHT, WD_NAME, NULL, NULL);
+		GLFWwindow *window = glfwCreateWindow(WD_WIDTH, WD_HEIGHT, (str(WD_NAME) + ":" + data.getName()).c_str(), NULL, NULL);
 		if (!window) {
-			PRINT RED "Failed to create GLFW window" CENDL;
+			ERROR RED "Failed to create GLFW window" CENDL;
 			glfwTerminate();
 			return (1);
 		}
@@ -144,7 +148,7 @@ int main (int argc, char **argv)
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	} catch (const std::exception &e) {
-		PRINT RED "Error: " AND e.what() CENDL;
+		ERROR RED "Error: " AND e.what() CENDL;
 	}
 	return (0);
 }

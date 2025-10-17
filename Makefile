@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/10/17 13:43:36 by tchartie         ###   ########.fr        #
+#    Updated: 2025/10/17 16:23:32 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,7 @@ WHITE				=	\033[0;97m
 
 SRC_DIR 			= 	src/
 SRC_NAME 		=	main.cpp \
+						scop.cpp \
 						glad/glad.cpp \
 						Shader.cpp \
 						VAO.cpp \
