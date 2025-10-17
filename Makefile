@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/10/16 15:28:12 by tchartie         ###   ########.fr        #
+#    Updated: 2025/10/17 13:43:36 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,8 @@ SRC_NAME 		=	main.cpp \
 						Shader.cpp \
 						VAO.cpp \
 						VBO.cpp \
-						EBO.cpp
+						EBO.cpp \
+						Texture.cpp
 
 OBJ_DIR 			=	obj/
 OBJ_NAME			=	$(SRC_NAME:.cpp=.o)

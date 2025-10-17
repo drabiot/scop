@@ -6,29 +6,19 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 18:23:31 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:08:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
 
-// Vertices coordinates
-/*GLfloat vertices[] =
+GLfloat vertices[] =
 { //     COORDINATES     /        COLORS      /   TexCoord  //
 	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
-	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	5.0f, 0.0f,
+	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	1.0f, 0.0f,
 	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
-	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	5.0f, 0.0f,
-	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	2.5f, 5.0f
-};*/
-
-GLfloat vertices[] =
-{ //     COORDINATES     /        COLORS      
-	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,
-	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
-	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
-	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,
-	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,
+	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	1.0f, 0.0f,
+	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	0.5f, 1.0f
 };
 
 // Indices for vertices order
@@ -89,13 +79,18 @@ int main (int argc, char **argv)
 		EBO EBO1(indices, sizeof(indices));
 
 		// Links VBO to VAO
-		VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)0);
-		VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+		VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
+		VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+		VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
 		// Unbind all to prevent accidentally modifying them
 		VAO1.Unbind();
 		VBO1.Unbind();
 		EBO1.Unbind();
 		
+		//GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
+
+		Texture tx("./resources/img/brick.bmp");
+
 		float		rotation = 0.0f;
 		double	prevTime = glfwGetTime();
 
@@ -103,8 +98,6 @@ int main (int argc, char **argv)
 
 		//Main loop
 		while(!glfwWindowShouldClose(window)) {
-			// Specify the color of the background
-			glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
 			// Clean the back buffer and depth buffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Tell OpenGL which Shader Program we want to use
@@ -131,6 +124,9 @@ int main (int argc, char **argv)
 			int	projLoc = glGetUniformLocation(shaderProgram.ID, "proj");
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
+			//glUniform1f(uniID, 0.5f);
+			tx.Bind(shaderProgram, 0);
+
 			VAO1.Bind();
 			glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 			glfwSwapBuffers(window);
@@ -141,6 +137,7 @@ int main (int argc, char **argv)
 		VAO1.Delete();
 		VBO1.Delete();
 		EBO1.Delete();
+		tx.Delete();
 		shaderProgram.Delete();
 
 		//Delete window to avoid leaks

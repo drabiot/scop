@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 17:53:49 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/17 13:44:36 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fstream>
 # include <sstream>
 # include <iostream>
+# include <vector>
 
 # include "glad.h"
 # include "glfw3.h"
