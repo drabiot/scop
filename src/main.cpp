@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/23 20:48:34 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/23 21:07:59 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int main (int argc, char **argv)
 		EBO EBO1(data.getIndices().data(),  data.getIndices().size()  * sizeof(GLuint));
 
 		// Links VBO to VAO
-		VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
+		VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 3 * sizeof(float), (void *)0);
 		//Color & Texture
 		/*VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
 		VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));*/
@@ -98,7 +98,7 @@ int main (int argc, char **argv)
 			glm::mat4 proj = glm::mat4(1.0f);
 
 			model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-			view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
+			view = glm::translate(view, glm::vec3(0.0f, -0.5f, -20.0f));
 			proj = glm::perspective(glm::radians(45.0f), (float)WD_WIDTH / WD_HEIGHT, 0.1f, 100.0f);
 
 			int	modelLoc = glGetUniformLocation(shaderProgram.ID, "model");

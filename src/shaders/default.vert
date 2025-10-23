@@ -14,5 +14,6 @@ void main()
 {
 	gl_Position = proj * view * model * vec4(aPos, 1.0);
 	color = aColor;
+	color = gl_Position.xyz;
 	texCoord = aTex;
 }

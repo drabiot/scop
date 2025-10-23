@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/23 20:46:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/23 21:28:11 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	scop::AddIndices(str newIndices) {
 		if (!isCorrectDigit(values[0]) || !isCorrectDigit(values[1]) || !isCorrectDigit(values[2]))
 			throw std::runtime_error(std::string("Not the right number of Indices"));
 
-		v1 = std::atoi(values[0].c_str());
-		v2 = std::atoi(values[1].c_str());
-		v3 = std::atoi(values[2].c_str());
+		v1 = std::atoi(values[0].c_str()) - 1;
+		v2 = std::atoi(values[1].c_str()) - 1;
+		v3 = std::atoi(values[2].c_str()) - 1;
 
 		this->_indices.push_back(v1);
 		this->_indices.push_back(v2);
@@ -107,18 +107,18 @@ void	scop::AddIndices(str newIndices) {
 		if (!isCorrectDigit(values[0]) || !isCorrectDigit(values[1]) || !isCorrectDigit(values[2]) || !isCorrectDigit(values[3]))
 			throw std::runtime_error(std::string("Not the right number of Indices"));
 
-		v1 = std::atoi(values[0].c_str());
-		v2 = std::atoi(values[1].c_str());
-		v3 = std::atoi(values[2].c_str());
-		v4 = std::atoi(values[3].c_str());
+		v1 = std::atoi(values[0].c_str()) - 1;
+		v2 = std::atoi(values[1].c_str()) - 1;
+		v3 = std::atoi(values[2].c_str()) - 1;
+		v4 = std::atoi(values[3].c_str()) - 1;
 
 		this->_indices.push_back(v1);
 		this->_indices.push_back(v2);
 		this->_indices.push_back(v3);
 
 		this->_indices.push_back(v1);
-		this->_indices.push_back(v4);
 		this->_indices.push_back(v3);
+		this->_indices.push_back(v4);
 	}
 	else
 		throw std::runtime_error(std::string("Not the right number of Indices"));
