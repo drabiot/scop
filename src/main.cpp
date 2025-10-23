@@ -6,11 +6,14 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/23 21:07:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/23 21:39:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
+
+int	WD_WIDTH = 800;
+int	WD_HEIGHT = 800;
 
 int main (int argc, char **argv)
 {
@@ -86,6 +89,9 @@ int main (int argc, char **argv)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Tell OpenGL which Shader Program we want to use
 			shaderProgram.Activate();
+
+			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);
+			glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 
 			double crntTime = glfwGetTime();
 			if (crntTime - prevTime >= 1 / 60) {

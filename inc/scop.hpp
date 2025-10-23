@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/23 20:25:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/23 21:39:45 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@
 # include "EBO.hpp"
 # include "Texture.hpp"
 
-# define WD_WIDTH 800
-# define WD_HEIGHT 800
+extern int	WD_WIDTH;
+extern int	WD_HEIGHT;
+
 # define WD_NAME "scop"
 
 class scop {
