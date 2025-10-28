@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 15:11:24 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:25:18 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class scop {
 		std::vector<GLuint>	getIndices(void);
 		str						getUsemtl(void);
 		int						getSmooth(void);
-
+		
 	private:
 		str						_materialFilename;
 		str						_name;
@@ -55,5 +55,18 @@ class scop {
 		int						_smooth;
 
 };
+
+class	utils {
+	public:
+		utils(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
+
+		VAO	VAO1;
+		VBO	VBO1;
+		EBO	EBO1;
+};
+
+void	initWindow(scop data, GLFWwindow **window);
+void	initGlad(void);
+void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils);
 
 #endif //SCOP_HPP

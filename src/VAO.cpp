@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:58:58 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 18:16:52 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:23:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 VAO::VAO() {
 	glGenVertexArrays(1, &ID);
+	this->Bind();
 }
 
 void	VAO::LinkAttrib(VBO VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void *offset) {

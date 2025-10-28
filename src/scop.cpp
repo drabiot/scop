@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/23 21:28:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 16:47:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ bool					isCorrectVertice(str vertice);
 bool					isCorrectDigit(str value);
 
 scop::scop(char *filename) {
+	//parsing
 	std::ifstream	file(filename);
 	str				line;
 
+	if (!file.is_open())
+		throw std::runtime_error(std::string("Can't open file"));
 	if (file.is_open()) {
 		while(std::getline(file, line)) {
 			str	type = firstWord(line);

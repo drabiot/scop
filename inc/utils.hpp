@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/23 20:15:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:03:08 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,5 @@ typedef std::string str;
 
 # define cref(type) const type &
 # define ref(type) type &
-
 
 #endif //UTILS_HPP

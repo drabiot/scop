@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:36:35 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/16 15:36:35 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 16:49:33 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ str get_file_contents(const char *filename) {
 	}
 	throw(std::runtime_error(str("Failed to open file: ") + filename));
 }
+
+Shader::Shader() {}
 
 Shader::Shader(const char *vertexFile, const char *fragmentFile) {
 	str	vertexCode = get_file_contents(vertexFile);
