@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:25:07 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:30:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,17 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, u
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+}
+
+void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils) {
+	// Delete all the objects we've created
+	utils.VAO1.Delete();
+	utils.VBO1.Delete();
+	utils.EBO1.Delete();
+	tx.Delete();
+	shaderProgram.Delete();
+
+	//Delete window to avoid leaks
+	glfwDestroyWindow(window);
+	glfwTerminate();
 }

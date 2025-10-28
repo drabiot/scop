@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:25:21 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:30:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,11 @@ int main (int argc, char **argv)
 		initGlad();
 
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
-		
 		utils		utils(data.getVertices(), data.getIndices());
-
-		Texture tx("./resources/img/brick.bmp");
+		Texture	tx("./resources/img/brick.bmp");
+		Camera	camera(WD_WIDTH, WD_HEIGHT, glm::vec3(0.0f, 0.0f, 25.0f));
 
 		glEnable(GL_DEPTH_TEST);
-
-		Camera camera(WD_WIDTH, WD_HEIGHT, glm::vec3(0.0f, 0.0f, 25.0f));
 
 		//Main loop
 		while(!glfwWindowShouldClose(window)) {
@@ -45,16 +42,7 @@ int main (int argc, char **argv)
 			loopGame(data, window, shaderProgram, tx, utils);
 		}
 
-		// Delete all the objects we've created
-		utils.VAO1.Delete();
-		utils.VBO1.Delete();
-		utils.EBO1.Delete();
-		tx.Delete();
-		shaderProgram.Delete();
-
-		//Delete window to avoid leaks
-		glfwDestroyWindow(window);
-		glfwTerminate();
+		deleteUtils(window, shaderProgram, tx, utils);
 	} catch (const std::exception &e) {
 		ERROR RED "Error: " AND e.what() CENDL;
 	}

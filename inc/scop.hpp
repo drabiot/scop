@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:25:18 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:29:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ class	utils {
 void	initWindow(scop data, GLFWwindow **window);
 void	initGlad(void);
 void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils);
+void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils);
 
 #endif //SCOP_HPP
