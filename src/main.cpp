@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/23 21:39:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 15:55:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ int main (int argc, char **argv)
 		VAO1.Unbind();
 		VBO1.Unbind();
 		EBO1.Unbind();
-		
-		//GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 
 		Texture tx("./resources/img/brick.bmp");
 
-		float		rotation = 0.0f;
-		double	prevTime = glfwGetTime();
-
 		glEnable(GL_DEPTH_TEST);
+
+		Camera camera(WD_WIDTH, WD_HEIGHT, glm::vec3(0.0f, 0.0f, 25.0f));
+
+		//float		rotation = 0.0f;
+		//double	prevTime = glfwGetTime();
 
 		//Main loop
 		while(!glfwWindowShouldClose(window)) {
@@ -89,17 +89,20 @@ int main (int argc, char **argv)
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Tell OpenGL which Shader Program we want to use
 			shaderProgram.Activate();
+			
+			camera.Inputs(window);
+			camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
 
 			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);
 			glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 
-			double crntTime = glfwGetTime();
+			/*double crntTime = glfwGetTime();
 			if (crntTime - prevTime >= 1 / 60) {
-				rotation += 0.5f;
+				camera.rotation += 0.5f;
 				prevTime = crntTime;
-			}
+			}*/
 
-			glm::mat4 model = glm::mat4(1.0f);
+			/*glm::mat4 model = glm::mat4(1.0f);
 			glm::mat4 view = glm::mat4(1.0f);
 			glm::mat4 proj = glm::mat4(1.0f);
 
@@ -112,7 +115,7 @@ int main (int argc, char **argv)
 			int	viewLoc = glGetUniformLocation(shaderProgram.ID, "view");
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 			int	projLoc = glGetUniformLocation(shaderProgram.ID, "proj");
-			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));*/
 
 			//glUniform1f(uniID, 0.5f);
 			tx.Bind(shaderProgram, 0);
