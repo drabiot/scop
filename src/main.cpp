@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 12:54:58 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:58:41 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int main (int argc, char **argv)
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
 			camera.Inputs(window);
-			camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+			camera.Matrix(45.0f, 0.1f, 1024.0f, shaderProgram, "camMatrix");
 			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);
 			glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 			loopGame(data, window, shaderProgram, tx, utils);

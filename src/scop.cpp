@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 15:31:55 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/29 19:53:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 str					firstWord(str content);
 str					lastWord(str content);
-std::vector<str>	split(str string);
+std::vector<str>	split(str s, str delimiter);
 bool					isCorrectVertice(str vertice);
 bool					isCorrectDigit(str value);
 
@@ -73,7 +73,7 @@ void	scop::setSmooth(int newSmooth) {
 
 
 void	scop::addVertices(str newVertices) {
-	std::vector<str>	values = split(newVertices);
+	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2, v3;
 
 	if (values.size() != 3)
@@ -89,48 +89,57 @@ void	scop::addVertices(str newVertices) {
 	glm::vec3	pos(v1, v2, v3);
 
 	this->_verticesPos.push_back(pos);
-	this->_verticesColor.resize(this->_verticesPos.size());
+	this->_verticesNormal.resize(this->_verticesPos.size());
 	this->_verticesText.resize(this->_verticesPos.size());
 }
 
 void	scop::addIndices(str newIndices) {
-	std::vector<str>	values = split(newIndices);
+	std::vector<str>	values = split(newIndices, " ");
 	GLuint				v1, v2, v3, v4;
 
 	if (values.size() == 3) {
-		if (!isCorrectDigit(values[0]) || !isCorrectDigit(values[1]) || !isCorrectDigit(values[2]))
-			throw std::runtime_error(std::string("Not the right number of Indices"));
 
-		v1 = std::atoi(values[0].c_str()) - 1;
-		v2 = std::atoi(values[1].c_str()) - 1;
-		v3 = std::atoi(values[2].c_str()) - 1;
-
-		this->_indices.push_back(v1);
-		this->_indices.push_back(v2);
-		this->_indices.push_back(v3);
+		v1 = parseIndices(values[0]);
+		v2 = parseIndices(values[1]);
+		v3 = parseIndices(values[2]);
 
 		normalizeVector(v1, v2, v3);
 	}
 	else if (values.size() == 4) {
-		if (!isCorrectDigit(values[0]) || !isCorrectDigit(values[1]) || !isCorrectDigit(values[2]) || !isCorrectDigit(values[3]))
-			throw std::runtime_error(std::string("Not the right number of Indices"));
 
-		v1 = std::atoi(values[0].c_str()) - 1;
-		v2 = std::atoi(values[1].c_str()) - 1;
-		v3 = std::atoi(values[2].c_str()) - 1;
-		v4 = std::atoi(values[3].c_str()) - 1;
-
-		this->_indices.push_back(v1);
-		this->_indices.push_back(v2);
-		this->_indices.push_back(v3);
+		v1 = parseIndices(values[0]);
+		v2 = parseIndices(values[1]);
+		v3 = parseIndices(values[2]);
 
 		normalizeVector(v1, v2, v3);
 
-		this->_indices.push_back(v1);
-		this->_indices.push_back(v3);
-		this->_indices.push_back(v4);
+		v1 = parseIndices(values[0]);
+		v3 = parseIndices(values[2]);
+		v4 = parseIndices(values[3]);
 
 		normalizeVector(v1, v3, v4);
+	}
+	else
+		throw std::runtime_error(std::string("Not the right number of Indices"));
+}
+
+GLuint	scop::parseIndices(str indice) {
+	if ((indice.find('/')) != str::npos) {
+		std::vector<str>	values = split(indice, "/");
+
+		if (!isCorrectDigit(values[0]) && !isCorrectDigit(values[1]) && !isCorrectDigit(values[2]))
+			throw std::runtime_error(std::string("Indices isn't a number"));
+
+		_indices.push_back(std::atoi(values[0].c_str()) - 1);
+		_indicesText.push_back(std::atoi(values[1].c_str()) - 1);
+		_indicesNormal.push_back(std::atoi(values[2].c_str()) - 1);
+
+		return (std::atoi(values[0].c_str()) - 1);
+	}
+	else if (isCorrectDigit(indice)) {
+		_indices.push_back(std::atoi(indice.c_str()) - 1);
+
+		return (std::atoi(indice.c_str()) - 1);
 	}
 	else
 		throw std::runtime_error(std::string("Not the right number of Indices"));
@@ -139,9 +148,9 @@ void	scop::addIndices(str newIndices) {
 void	scop::normalizeVector(int A, int B, int C) {
 	glm::vec3	normal = glm::normalize(glm::cross(_verticesPos[B] - _verticesPos[A], _verticesPos[C] - _verticesPos[A]));
 
-	_verticesColor[A] = normal;
-	_verticesColor[B] = normal;
-	_verticesColor[C] = normal;
+	_verticesNormal[A] = normal;
+	_verticesNormal[B] = normal;
+	_verticesNormal[C] = normal;
 }
 
 void	scop::setVertices() {
@@ -150,9 +159,9 @@ void	scop::setVertices() {
 		_vertices.push_back(_verticesPos[i].y);
 		_vertices.push_back(_verticesPos[i].z);
 
-		_vertices.push_back(_verticesColor[i].x);
-		_vertices.push_back(_verticesColor[i].y);
-		_vertices.push_back(_verticesColor[i].z);
+		_vertices.push_back(_verticesNormal[i].x);
+		_vertices.push_back(_verticesNormal[i].y);
+		_vertices.push_back(_verticesNormal[i].z);
 	}
 }
 
@@ -196,16 +205,19 @@ str	lastWord(str content) {
 	return (lastWord);
 }
 
-std::vector<str> split(str string) {
-	std::vector<str>		tokens;
-	std::istringstream	iss(string);
-	str						token;
- 
-	while (iss >> token) {
-		tokens.push_back(token);
+std::vector<str>	split(str s, str delimiter) {
+	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+	std::string token;
+	std::vector<std::string> res;
+
+	while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
+		token = s.substr (pos_start, pos_end - pos_start);
+		pos_start = pos_end + delim_len;
+		res.push_back (token);
 	}
 
-   return tokens;
+	res.push_back (s.substr (pos_start));
+	return res;
 }
 
 bool	isCorrectVertice(str vertice) {
@@ -214,10 +226,18 @@ bool	isCorrectVertice(str vertice) {
 }
 
 bool isCorrectDigit(str value) {
-    for (str::const_iterator it = value.begin(); it != value.end(); ++it) {
-        if (!std::isdigit(static_cast<unsigned char>(*it))) {
-            return (false);
-        }
-    }
-    return (true);
+	if (value.empty())
+		return (false);
+	size_t start = 0;
+	if (value[0] == '-' || value[0] == '+') {
+		if (value.size() == 1)
+			return (false);
+		start = 1;
+	}
+	for (size_t i = start; i < value.size(); ++i) {
+		if (!std::isdigit(static_cast<unsigned char>(value[i])))
+			return (false);
+	}
+	return (true);
 }
+
