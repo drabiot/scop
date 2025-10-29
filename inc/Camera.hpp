@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 14:59:38 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 15:49:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:49:08 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "gtx/vector_angle.hpp"
 
 # include "Shader.hpp"
+# include "utils.hpp"
 
 class Camera {
 	public:
@@ -32,13 +33,10 @@ class Camera {
 		// Prevents the camera from jumping around when first clicking left click
 		bool firstClick = true;
 
-		int	width;
-		int	height;
-
 		float	speed = 0.1f;
 		float sensi = 100.0f;
 
-		Camera(int width, int height, glm::vec3 position);
+		Camera(glm::vec3 position);
 
 		void	Matrix(float FOVdeg, float nearPlane, float farPlane, Shader &shader, const char *uniform);
 		void	Inputs(GLFWwindow *window);

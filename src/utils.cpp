@@ -6,18 +6,13 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:30:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:54:46 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
 
 utils::utils(std::vector<GLfloat> vertices, std::vector<GLuint> indices) : VBO1(vertices.data(), vertices.size() * sizeof(GLfloat)), EBO1(indices.data(), indices.size() * sizeof(GLuint)) {
-	// Generates Vertex Buffer Object and links it to vertices
-	//VBO1 = VBO(vertices.data(), vertices.size() * sizeof(GLfloat));
-	// Generates Element Buffer Object and links it to indices
-	//EBO1 = EBO(indices.data(),  indices.size()  * sizeof(GLuint));
-
 	// Links VBO to VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 3 * sizeof(float), (void *)0);
 	//Color & Texture
@@ -57,7 +52,6 @@ void	initGlad() {
 	gladLoadGL();
 	
 	// Specify the viewport of OpenGL in the Window
-	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 }
 
@@ -66,9 +60,6 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, u
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// Tell OpenGL which Shader Program we want to use
 	shaderProgram.Activate();
-
-	glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);
-	glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 
 	tx.Bind(shaderProgram, 0);
 

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:29:50 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:50:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 # include "EBO.hpp"
 # include "Texture.hpp"
 # include "Camera.hpp"
-
-extern int	WD_WIDTH;
-extern int	WD_HEIGHT;
 
 # define WD_NAME "scop"
 

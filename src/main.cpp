@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:30:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:54:58 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,16 @@ int main (int argc, char **argv)
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
 		utils		utils(data.getVertices(), data.getIndices());
 		Texture	tx("./resources/img/brick.bmp");
-		Camera	camera(WD_WIDTH, WD_HEIGHT, glm::vec3(0.0f, 0.0f, 25.0f));
+		Camera	camera(glm::vec3(0.0f, 0.0f, 25.0f));
 
 		glEnable(GL_DEPTH_TEST);
 
-		//Main loop
+		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
 			camera.Inputs(window);
 			camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);
+			glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 			loopGame(data, window, shaderProgram, tx, utils);
 		}
 
