@@ -6,20 +6,12 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 14:59:38 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:49:08 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:54:44 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_HPP
 # define CAMERA_HPP
-
-# define GLM_ENABLE_EXPERIMENTAL
-# include "glad/glad.h"
-# include "GLFW/glfw3.h"
-# include "glm.hpp"
-# include "gtc/type_ptr.hpp"
-# include "gtx/rotate_vector.hpp"
-# include "gtx/vector_angle.hpp"
 
 # include "Shader.hpp"
 # include "utils.hpp"

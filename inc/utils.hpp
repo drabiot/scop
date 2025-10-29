@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:50:20 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/29 14:54:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,13 @@
 # include "color.hpp"
 
 //TO DELETE
-#include"glm.hpp"
-#include"gtc/matrix_transform.hpp"
-#include"gtc/type_ptr.hpp"
+# define GLM_ENABLE_EXPERIMENTAL
+# include "gtc/matrix_transform.hpp"
+# include "gtc/type_ptr.hpp"
+# include "glm.hpp"
+# include "gtc/type_ptr.hpp"
+# include "gtx/rotate_vector.hpp"
+# include "gtx/vector_angle.hpp"
 
 # define AND	<<
 # define PRINT	std::cout AND

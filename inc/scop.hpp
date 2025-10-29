@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 17:50:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/29 15:15:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ class scop {
 		void	setUsemtl(str newUsemtl);
 		void	setSmooth(int newSmooth);
 
-		void	AddVertices(str newVertices);
-		void	AddIndices(str newIndices);
+		void	addVertices(str newVertices);
+		void	addIndices(str newIndices);
+		void	normalizeVector(int A, int B, int C);
+		void	setVertices(void);
 
 		str						getMaterialFilename(void);
 		str						getName(void);
@@ -44,12 +46,15 @@ class scop {
 		int						getSmooth(void);
 		
 	private:
-		str						_materialFilename;
-		str						_name;
-		std::vector<GLfloat>	_vertices;
-		std::vector<GLuint>	_indices;
-		str						_usemtl;
-		int						_smooth;
+		str							_materialFilename;
+		str							_name;
+		std::vector<glm::vec3>	_verticesPos;
+		std::vector<glm::vec3>	_verticesColor;
+		std::vector<glm::vec3>	_verticesText;
+		std::vector<GLfloat>		_vertices;
+		std::vector<GLuint>		_indices;
+		str							_usemtl;
+		int							_smooth;
 
 };
 
