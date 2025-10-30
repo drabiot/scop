@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 19:51:21 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:27:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ class scop {
 		void		addIndices(str newIndices);
 		GLuint	parseIndices(str indice);
 		void		normalizeVector(int A, int B, int C);
-		void		setVertices(void);
 
 		str						getMaterialFilename(void);
 		str						getName(void);
@@ -64,11 +63,10 @@ class scop {
 
 class	utils {
 	public:
-		utils(std::vector<GLfloat> vertices, std::vector<GLuint> indices);
+		utils(std::vector<GLfloat> vertices);
 
 		VAO	VAO1;
 		VBO	VBO1;
-		EBO	EBO1;
 };
 
 void	initWindow(scop data, GLFWwindow **window);

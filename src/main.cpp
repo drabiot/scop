@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 19:58:41 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:44:25 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main (int argc, char **argv)
 		initGlad();
 
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
-		utils		utils(data.getVertices(), data.getIndices());
+		utils		utils(data.getVertices());
 		Texture	tx("./resources/img/brick.bmp");
 		Camera	camera(glm::vec3(0.0f, 0.0f, 25.0f));
 

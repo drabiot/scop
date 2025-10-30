@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 19:53:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/30 16:31:05 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ scop::scop(char *filename) {
 				addIndices(data);
 		}
 	}
-	setVertices();
 	file.close();
 }
 
@@ -82,14 +81,13 @@ void	scop::addVertices(str newVertices) {
 	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]) || !isCorrectVertice(values[2]))
 		throw std::runtime_error(std::string("Invalid Vertice"));
 
-	v1 = static_cast<GLfloat>(std::atof(values[0].c_str()));
-	v2 = static_cast<GLfloat>(std::atof(values[1].c_str()));
-	v3 = static_cast<GLfloat>(std::atof(values[2].c_str()));
+	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
+	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
+	v3 = static_cast<GLfloat>(std::stod(values[2].c_str()));
 
 	glm::vec3	pos(v1, v2, v3);
 
 	this->_verticesPos.push_back(pos);
-	this->_verticesNormal.resize(this->_verticesPos.size());
 	this->_verticesText.resize(this->_verticesPos.size());
 }
 
@@ -145,23 +143,22 @@ GLuint	scop::parseIndices(str indice) {
 		throw std::runtime_error(std::string("Not the right number of Indices"));
 }
 
-void	scop::normalizeVector(int A, int B, int C) {
-	glm::vec3	normal = glm::normalize(glm::cross(_verticesPos[B] - _verticesPos[A], _verticesPos[C] - _verticesPos[A]));
+void scop::normalizeVector(int A, int B, int C) {
+	glm::vec3 normal = glm::normalize(glm::cross(
+		_verticesPos[B] - _verticesPos[A],
+		_verticesPos[C] - _verticesPos[A]
+	));
 
-	_verticesNormal[A] = normal;
-	_verticesNormal[B] = normal;
-	_verticesNormal[C] = normal;
-}
+	glm::vec3 positions[3] = { _verticesPos[A], _verticesPos[B], _verticesPos[C] };
 
-void	scop::setVertices() {
-	for (size_t i = 0; i < _verticesPos.size(); ++i) {
-		_vertices.push_back(_verticesPos[i].x);
-		_vertices.push_back(_verticesPos[i].y);
-		_vertices.push_back(_verticesPos[i].z);
+	for (int i = 0; i < 3; ++i) {
+		_vertices.push_back(positions[i].x);
+		_vertices.push_back(positions[i].y);
+		_vertices.push_back(positions[i].z);
 
-		_vertices.push_back(_verticesNormal[i].x);
-		_vertices.push_back(_verticesNormal[i].y);
-		_vertices.push_back(_verticesNormal[i].z);
+		_vertices.push_back(normal.x);
+		_vertices.push_back(normal.y);
+		_vertices.push_back(normal.z);
 	}
 }
 

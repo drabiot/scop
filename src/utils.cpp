@@ -6,13 +6,13 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 15:20:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:46:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
 
-utils::utils(std::vector<GLfloat> vertices, std::vector<GLuint> indices) : VBO1(vertices.data(), vertices.size() * sizeof(GLfloat)), EBO1(indices.data(), indices.size() * sizeof(GLuint)) {
+utils::utils(std::vector<GLfloat> vertices) : VBO1(vertices.data(), vertices.size() * sizeof(GLfloat)) {
 	// Links VBO to VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)0);
 	//Color & Texture
@@ -21,7 +21,7 @@ utils::utils(std::vector<GLfloat> vertices, std::vector<GLuint> indices) : VBO1(
 	// Unbind all to prevent accidentally modifying them
 	VAO1.Unbind();
 	VBO1.Unbind();
-	EBO1.Unbind();
+	//EBO1.Unbind();
 }
 
 void	initWindow(scop data, GLFWwindow **window) {
@@ -64,7 +64,8 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, u
 	tx.Bind(shaderProgram, 0);
 
 	utils.VAO1.Bind();
-	glDrawElements(GL_TRIANGLES, data.getIndices().size(), GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
+	//glDrawElements(GL_TRIANGLES, data.getIndices().size(), GL_UNSIGNED_INT, 0);
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
@@ -74,7 +75,7 @@ void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils uti
 	// Delete all the objects we've created
 	utils.VAO1.Delete();
 	utils.VBO1.Delete();
-	utils.EBO1.Delete();
+	//utils.EBO1.Delete();
 	tx.Delete();
 	shaderProgram.Delete();
 
