@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/31 15:23:10 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/10/31 15:27:06 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,19 @@ void	scop::addVertices(str newVertices) {
 	GLfloat				v1, v2, v3;
 	
 	if (values.size() != 3)
-	throw std::runtime_error(std::string("Not the right number of Vertices"));
+		throw std::runtime_error(std::string("Not the right number of Vertices"));
 
-if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]) || !isCorrectVertice(values[2]))
-throw std::runtime_error(std::string("Invalid Vertice"));
+	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]) || !isCorrectVertice(values[2]))
+		throw std::runtime_error(std::string("Invalid Vertice"));
 
-v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
-v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
-v3 = static_cast<GLfloat>(std::stod(values[2].c_str()));
+	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
+	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
+	v3 = static_cast<GLfloat>(std::stod(values[2].c_str()));
 
-glm::vec3	pos(v1, v2, v3);
+	glm::vec3	pos(v1, v2, v3);
 
-this->_verticesPos.push_back(pos);
-this->_verticesText.resize(this->_verticesPos.size());
+	this->_verticesPos.push_back(pos);
+	this->_verticesText.resize(this->_verticesPos.size());
 }
 
 void	scop::addIndices(str newIndices) {
@@ -121,7 +121,7 @@ void	scop::addIndices(str newIndices) {
 		normalizeVector(v1, v3, v4);
 	}
 	else
-	throw std::runtime_error(std::string("Not the right number of Indices"));
+		throw std::runtime_error(std::string("Not the right number of Indices"));
 }
 
 GLuint	scop::parseIndices(str indice) {
@@ -266,8 +266,10 @@ bool isCorrectDigit(str value) {
 
 str trim(cref(str) s) {
 	size_t start = s.find_first_not_of(" \t\r\n");
+	
 	if (start == str::npos)
 		return ("");
+	
 	size_t end = s.find_last_not_of(" \t\r\n");
 	return (s.substr(start, end - start + 1));
 }
