@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 13:09:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:51:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	WD_WIDTH = 800;
 int	WD_HEIGHT = 800;
+bool	DISPLAY = false;
+bool	PAUSE = false;
 
 int main (int argc, char **argv)
 {
@@ -35,8 +37,20 @@ int main (int argc, char **argv)
 
 		glEnable(GL_DEPTH_TEST);
 
+		float rotation = 0.0f;
+
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
+			if (!PAUSE)
+				rotation += 0.01f;
+
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::rotate(model, rotation, glm::vec3(0.0f, 1.0f, 0.0f));
+
+			shaderProgram.Activate();
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+			glUniform1i(glGetUniformLocation(shaderProgram.ID, "display"), DISPLAY);
 			camera.Inputs(window);
 			camera.Matrix(45.0f, 0.1f, 1024.0f, shaderProgram, "camMatrix");
 			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:06:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 12:58:27 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:50:54 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@ void	Camera::Matrix(float FOVdeg, float nearPlane, float farPlane, Shader &shade
 }
 
 void	Camera::Inputs(GLFWwindow *window) {
+	// Handles Display inputs
+	static double lastToggleTime = 0.0;
+	double currentTime = glfwGetTime();
+
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && currentTime - lastToggleTime > 0.1) {
+		DISPLAY = !DISPLAY;
+		lastToggleTime = currentTime;
+	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && currentTime - lastToggleTime > 0.1) {
+		PAUSE = !PAUSE;
+		lastToggleTime = currentTime;
+	}
+
 	// Handles key inputs
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		Position += speed * Orientation;

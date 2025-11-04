@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 15:22:47 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:30:11 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,12 +176,12 @@ glm::vec3	scop::parseIndices(str indice) {
 		GLuint	v = std::atoi(values[0].c_str()) - 1;
 		_indices.push_back(v);
 
-		glm::vec3	ret(v, -1, -1);
+		glm::vec3	ret(v, -999, -999);
 		return (ret);
 	}
 
 	if (values.size() >= 2) {
-		GLuint		v = -1, vt = -1, vn = -1;
+		GLuint		v = -999, vt = -999, vn = -999;
 		
 		if (!values[0].empty()) {
 			if (!isCorrectDigit(values[0]))
@@ -226,7 +226,7 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		if (idx >= 0 && idx < (int)_verticesText.size())
 			uvs[i] = _verticesText[idx];
 		else
-			uvs[i] = glm::vec2(-1.0f, -1.0f);
+			uvs[i] = glm::vec2(0.0f, 0.0f); //Create Correct Textures
 	}
 
 	glm::vec3 normals[3];
@@ -235,7 +235,7 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		if (idx >= 0 && idx < (int)_verticesNormal.size())
 			normals[i] = _verticesNormal[idx];
 		else
-			normals[i] = normal; // fallback
+			normals[i] = normal;
 	}
 
 	for (int i = 0; i < 3; ++i) {
@@ -245,10 +245,8 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		_vertices.push_back(positions[i].z);
 
 		// Texture coords
-		/*if (uvs[i].x != -1 && uvs[i].y != -1) {
-			_vertices.push_back(uvs[i].x);
-			_vertices.push_back(uvs[i].y);
-		}*/
+		_vertices.push_back(uvs[i].x);
+		_vertices.push_back(uvs[i].y);
 
 		// Normals
 		_vertices.push_back(normals[i].x);

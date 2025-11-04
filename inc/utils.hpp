@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/29 14:54:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 18:50:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,8 @@ typedef std::string str;
 
 extern int	WD_WIDTH;
 extern int	WD_HEIGHT;
+
+extern bool	DISPLAY;
+extern bool	PAUSE;
 
 #endif //UTILS_HPP
