@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/31 15:27:06 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 13:11:02 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,11 @@ scop::scop(char *filename) {
 				setSmooth(std::atoi(data.c_str()));
 			}
 			else if (type == "v")
-				addVertices(data);
+				addVerticesPos(data);
+			else if (type == "vn")
+				addVerticesNormal(data);
+			else if (type == "vt")
+				addVerticesText(data);
 			else if (type == "f")
 				addIndices(data);
 		}
@@ -74,12 +78,12 @@ void	scop::setSmooth(int newSmooth) {
 }
 
 
-void	scop::addVertices(str newVertices) {
+void	scop::addVerticesPos(str newVertices) {
 	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2, v3;
 	
 	if (values.size() != 3)
-		throw std::runtime_error(std::string("Not the right number of Vertices"));
+		throw std::runtime_error(std::string("Not the right number of Vertices for Position"));
 
 	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]) || !isCorrectVertice(values[2]))
 		throw std::runtime_error(std::string("Invalid Vertice"));
@@ -91,7 +95,43 @@ void	scop::addVertices(str newVertices) {
 	glm::vec3	pos(v1, v2, v3);
 
 	this->_verticesPos.push_back(pos);
-	this->_verticesText.resize(this->_verticesPos.size());
+}
+
+void	scop::addVerticesNormal(str newVertices) {
+	std::vector<str>	values = split(newVertices, " ");
+	GLfloat				v1, v2, v3;
+	
+	if (values.size() != 3)
+		throw std::runtime_error(std::string("Not the right number of Vertices for Normal"));
+
+	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]) || !isCorrectVertice(values[2]))
+		throw std::runtime_error(std::string("Invalid Vertice"));
+
+	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
+	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
+	v3 = static_cast<GLfloat>(std::stod(values[2].c_str()));
+
+	glm::vec3	pos(v1, v2, v3);
+
+	this->_verticesNormal.push_back(pos);
+}
+
+void	scop::addVerticesText(str newVertices) {
+	std::vector<str>	values = split(newVertices, " ");
+	GLfloat				v1, v2;
+	
+	if (values.size() != 2)
+		throw std::runtime_error(std::string("Not the right number of Vertices for Texture"));
+
+	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]))
+		throw std::runtime_error(std::string("Invalid Vertice"));
+
+	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
+	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
+
+	glm::vec2	pos(v1, v2);
+
+	this->_verticesText.push_back(pos);
 }
 
 void	scop::addIndices(str newIndices) {

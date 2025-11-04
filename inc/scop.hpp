@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/30 16:27:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 13:09:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ class scop {
 		void		setUsemtl(str newUsemtl);
 		void		setSmooth(int newSmooth);
 
-		void		addVertices(str newVertices);
+		void		addVerticesPos(str newVertices);
+		void		addVerticesNormal(str newVertices);
+		void		addVerticesText(str newVertices);
 		void		addIndices(str newIndices);
 		GLuint	parseIndices(str indice);
 		void		normalizeVector(int A, int B, int C);
@@ -55,7 +57,7 @@ class scop {
 		
 		std::vector<glm::vec3>	_verticesPos;
 		std::vector<glm::vec3>	_verticesNormal;
-		std::vector<glm::vec3>	_verticesText;
+		std::vector<glm::vec2>	_verticesText;
 
 		std::vector<GLuint>		_indicesNormal;
 		std::vector<GLuint>		_indicesText;
