@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 13:11:02 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 15:22:47 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	scop::addVerticesText(str newVertices) {
 
 void	scop::addIndices(str newIndices) {
 	std::vector<str>	values = split(newIndices, " ");
-	GLuint				v1, v2, v3, v4;
+	glm::vec3			v1, v2, v3, v4;
 	
 	if (values.size() == 3) {
 		
@@ -164,8 +164,8 @@ void	scop::addIndices(str newIndices) {
 		throw std::runtime_error(std::string("Not the right number of Indices"));
 }
 
-GLuint	scop::parseIndices(str indice) {
-	std::vector<str> values = split(indice, "/");
+glm::vec3	scop::parseIndices(str indice) {
+	std::vector<str>	values = split(indice, "/");
 	
 	for (size_t i = 0; i < values.size(); ++i)
 		values[i] = trim(values[i]);
@@ -173,14 +173,15 @@ GLuint	scop::parseIndices(str indice) {
 	if (values.size() == 1) {
 		if (!isCorrectDigit(values[0]))
 			throw std::runtime_error("Vertex index isn't a number");
-		GLuint v = std::atoi(values[0].c_str()) - 1;
+		GLuint	v = std::atoi(values[0].c_str()) - 1;
 		_indices.push_back(v);
 
-		return (v);
+		glm::vec3	ret(v, -1, -1);
+		return (ret);
 	}
 
 	if (values.size() >= 2) {
-		GLuint v = 0, vt = 0, vn = 0;
+		GLuint		v = -1, vt = -1, vn = -1;
 		
 		if (!values[0].empty()) {
 			if (!isCorrectDigit(values[0]))
@@ -200,30 +201,62 @@ GLuint	scop::parseIndices(str indice) {
 		vn = std::atoi(values[2].c_str()) - 1;
 		_indicesNormal.push_back(vn);
 	}
-	return (v);
+	glm::vec3	ret(v, vt, vn);
+	return (ret);
 }
 
 throw std::runtime_error("Invalid face indices format");
 }
 
-void scop::normalizeVector(int A, int B, int C) {
+void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 	glm::vec3 normal = glm::normalize(glm::cross(
-		_verticesPos[B] - _verticesPos[A],
-		_verticesPos[C] - _verticesPos[A]
+		_verticesPos[B.x] - _verticesPos[A.x],
+		_verticesPos[C.x] - _verticesPos[A.x]
 	));
-	
-	glm::vec3 positions[3] = { _verticesPos[A], _verticesPos[B], _verticesPos[C] };
-	
+
+	glm::vec3 positions[3] = {
+		_verticesPos[A.x],
+		_verticesPos[B.x],
+		_verticesPos[C.x]
+	};
+
+	glm::vec2 uvs[3];
 	for (int i = 0; i < 3; ++i) {
+		int idx = (i == 0 ? A.y : (i == 1 ? B.y : C.y));
+		if (idx >= 0 && idx < (int)_verticesText.size())
+			uvs[i] = _verticesText[idx];
+		else
+			uvs[i] = glm::vec2(-1.0f, -1.0f);
+	}
+
+	glm::vec3 normals[3];
+	for (int i = 0; i < 3; ++i) {
+		int idx = (i == 0 ? A.z : (i == 1 ? B.z : C.z));
+		if (idx >= 0 && idx < (int)_verticesNormal.size())
+			normals[i] = _verticesNormal[idx];
+		else
+			normals[i] = normal; // fallback
+	}
+
+	for (int i = 0; i < 3; ++i) {
+		// Positions
 		_vertices.push_back(positions[i].x);
 		_vertices.push_back(positions[i].y);
 		_vertices.push_back(positions[i].z);
-		
-		_vertices.push_back(normal.x);
-		_vertices.push_back(normal.y);
-		_vertices.push_back(normal.z);
+
+		// Texture coords
+		/*if (uvs[i].x != -1 && uvs[i].y != -1) {
+			_vertices.push_back(uvs[i].x);
+			_vertices.push_back(uvs[i].y);
+		}*/
+
+		// Normals
+		_vertices.push_back(normals[i].x);
+		_vertices.push_back(normals[i].y);
+		_vertices.push_back(normals[i].z);
 	}
 }
+
 
 str	scop::getMaterialFilename() {
 	return (this->_materialFilename);

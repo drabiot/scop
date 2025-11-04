@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 13:09:24 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/04 14:45:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ class scop {
 		scop(char *filename);
 		~scop(void);
 
-		void		setMaterialFilename(str newMaterialFilename);
-		void		setName(str newName);
-		void		setUsemtl(str newUsemtl);
-		void		setSmooth(int newSmooth);
+		void						setMaterialFilename(str newMaterialFilename);
+		void						setName(str newName);
+		void						setUsemtl(str newUsemtl);
+		void						setSmooth(int newSmooth);
 
-		void		addVerticesPos(str newVertices);
-		void		addVerticesNormal(str newVertices);
-		void		addVerticesText(str newVertices);
-		void		addIndices(str newIndices);
-		GLuint	parseIndices(str indice);
-		void		normalizeVector(int A, int B, int C);
+		void						addVerticesPos(str newVertices);
+		void						addVerticesNormal(str newVertices);
+		void						addVerticesText(str newVertices);
+		void						addIndices(str newIndices);
+		glm::vec3				parseIndices(str indice);
+		void						normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
 
 		str						getMaterialFilename(void);
 		str						getName(void);
