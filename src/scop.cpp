@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 15:31:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 18:21:59 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	scop::addVerticesPos(str newVertices) {
 	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2, v3;
 	
-	if (values.size() != 3)
+	//PRINT MAGENTA AND values[0] AND " " AND values[1] AND " " AND values[2] CENDL;
+	if (values.size() < 3)
 		throw std::runtime_error(str("Not the right number of Vertices for Position"));
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
@@ -103,7 +104,8 @@ void	scop::addVerticesNormal(str newVertices) {
 	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2, v3;
 	
-	if (values.size() != 3)
+	//PRINT YELLOW AND values[0] AND " " AND values[1] AND " " AND values[2] CENDL;
+	if (values.size() < 3)
 		throw std::runtime_error(str("Not the right number of Vertices for Normal"));
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
@@ -119,7 +121,8 @@ void	scop::addVerticesText(str newVertices) {
 	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2;
 	
-	if (values.size() != 2)
+	//PRINT GREEN AND values[0] AND " " AND values[1] CENDL;
+	if (values.size() < 2)
 		throw std::runtime_error(str("Not the right number of Vertices for Texture"));
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
