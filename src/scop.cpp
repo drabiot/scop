@@ -6,55 +6,60 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 18:30:11 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:40:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
 
+bool					isDirectory(const char *path);
 str					firstWord(str content);
 str					lastWord(str content);
 std::vector<str>	split(str s, str delimiter);
-bool					isCorrectVertice(str vertice);
 bool					isCorrectDigit(str value);
 str					trim(cref(str) s);
 
 
-
 scop::scop(char *filename) {
-	//parsing
-	std::ifstream	file(filename);
-	str				line;
-	
+	this->_centerDefine = false;
+	if (isDirectory(filename))
+		throw std::runtime_error("Can't open a directory as a file");
+
+	int len = strlen(filename);
+	if (len < 4 || strncmp(&filename[len - 4], ".obj", 4) != 0)
+		throw std::runtime_error("Can't open a non .obj file");
+
+	std::ifstream file(filename);
 	if (!file.is_open())
-		throw std::runtime_error(std::string("Can't open file"));
-	if (file.is_open()) {
-		while(std::getline(file, line)) {
-			str	type = firstWord(line);
-			str	data = lastWord(line);
-			if (type == "mtllib")
-				setMaterialFilename(data);
-			else if (type == "o")
-				setName(data);
-			else if (type == "usemlt")
-				setUsemtl(data);
-			else if (type == "s") {
-				if (data == "off")
-					setSmooth(0);
-				else if (data == "on")
-					setSmooth(1);
-				else
+		throw std::runtime_error("Can't open file");
+
+	str line;
+	while (std::getline(file, line)) {
+		str type = firstWord(line);
+		str data = lastWord(line);
+
+		if (type == "mtllib")
+			setMaterialFilename(data);
+		else if (type == "o")
+			setName(data);
+		else if (type == "usemtl")
+			setUsemtl(data);
+		else if (type == "s") {
+			if (data == "off")
+				setSmooth(0);
+			else if (data == "on")
+				setSmooth(1);
+			else
 				setSmooth(std::atoi(data.c_str()));
-			}
-			else if (type == "v")
-				addVerticesPos(data);
-			else if (type == "vn")
-				addVerticesNormal(data);
-			else if (type == "vt")
-				addVerticesText(data);
-			else if (type == "f")
-				addIndices(data);
 		}
+		else if (type == "v")
+			addVerticesPos(data);
+		else if (type == "vn")
+			addVerticesNormal(data);
+		else if (type == "vt")
+			addVerticesText(data);
+		else if (type == "f")
+			addIndices(data);
 	}
 	file.close();
 }
@@ -83,10 +88,7 @@ void	scop::addVerticesPos(str newVertices) {
 	GLfloat				v1, v2, v3;
 	
 	if (values.size() != 3)
-		throw std::runtime_error(std::string("Not the right number of Vertices for Position"));
-
-	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]) || !isCorrectVertice(values[2]))
-		throw std::runtime_error(std::string("Invalid Vertice"));
+		throw std::runtime_error(str("Not the right number of Vertices for Position"));
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
@@ -102,10 +104,7 @@ void	scop::addVerticesNormal(str newVertices) {
 	GLfloat				v1, v2, v3;
 	
 	if (values.size() != 3)
-		throw std::runtime_error(std::string("Not the right number of Vertices for Normal"));
-
-	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]) || !isCorrectVertice(values[2]))
-		throw std::runtime_error(std::string("Invalid Vertice"));
+		throw std::runtime_error(str("Not the right number of Vertices for Normal"));
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
@@ -121,10 +120,7 @@ void	scop::addVerticesText(str newVertices) {
 	GLfloat				v1, v2;
 	
 	if (values.size() != 2)
-		throw std::runtime_error(std::string("Not the right number of Vertices for Texture"));
-
-	if (!isCorrectVertice(values[0]) || !isCorrectVertice(values[1]))
-		throw std::runtime_error(std::string("Invalid Vertice"));
+		throw std::runtime_error(str("Not the right number of Vertices for Texture"));
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
@@ -161,10 +157,15 @@ void	scop::addIndices(str newIndices) {
 		normalizeVector(v1, v3, v4);
 	}
 	else
-		throw std::runtime_error(std::string("Not the right number of Indices"));
+		throw std::runtime_error(str("Not the right number of Indices"));
 }
 
 glm::vec3	scop::parseIndices(str indice) {
+	if (!_centerDefine) {
+		computeBoundingBox();
+		_centerDefine = true;
+	}
+
 	std::vector<str>	values = split(indice, "/");
 	
 	for (size_t i = 0; i < values.size(); ++i)
@@ -226,7 +227,7 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		if (idx >= 0 && idx < (int)_verticesText.size())
 			uvs[i] = _verticesText[idx];
 		else
-			uvs[i] = glm::vec2(0.0f, 0.0f); //Create Correct Textures
+			uvs[i] = glm::vec2(0.0f, 0.0f); //Create Correct Textures Pos
 	}
 
 	glm::vec3 normals[3];
@@ -240,9 +241,9 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 
 	for (int i = 0; i < 3; ++i) {
 		// Positions
-		_vertices.push_back(positions[i].x);
-		_vertices.push_back(positions[i].y);
-		_vertices.push_back(positions[i].z);
+		_vertices.push_back(positions[i].x - _center.x);
+		_vertices.push_back(positions[i].y - _center.y);
+		_vertices.push_back(positions[i].z - _center.z);
 
 		// Texture coords
 		_vertices.push_back(uvs[i].x);
@@ -255,6 +256,32 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 	}
 }
 
+void	scop::computeBoundingBox() {
+	if (_verticesPos.empty()) {
+		_center = glm::vec3(0.0f);
+		return;
+	}
+
+	float minX = _verticesPos[0].x, maxX = _verticesPos[0].x;
+	float minY = _verticesPos[0].y, maxY = _verticesPos[0].y;
+	float minZ = _verticesPos[0].z, maxZ = _verticesPos[0].z;
+
+	for (size_t i = 0; i < _verticesPos.size(); ++i) {
+		const glm::vec3 &v = _verticesPos[i];
+		if (v.x < minX) minX = v.x;
+		if (v.x > maxX) maxX = v.x;
+		if (v.y < minY) minY = v.y;
+		if (v.y > maxY) maxY = v.y;
+		if (v.z < minZ) minZ = v.z;
+		if (v.z > maxZ) maxZ = v.z;
+	}
+
+	_center = glm::vec3(
+		(minX + maxX) / 2.0f,
+		(minY + maxY) / 2.0f,
+		(minZ + maxZ) / 2.0f
+	);
+}
 
 str	scop::getMaterialFilename() {
 	return (this->_materialFilename);
@@ -280,7 +307,18 @@ int			scop::getSmooth() {
 	return (this->_smooth);
 }
 
+glm::vec3	scop::getCenter() {
+	return (this->_center);
+}
+
 //Utils
+
+bool	isDirectory(const char *path) {
+	struct stat s;
+	if (stat(path, &s) == 0)
+		return S_ISDIR(s.st_mode);
+	return false;
+}
 
 str	firstWord(str content) {
 	size_t	endWord = content.find(" ");
@@ -298,10 +336,10 @@ str	lastWord(str content) {
 
 std::vector<str>	split(str s, str delimiter) {
 	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-	std::string token;
-	std::vector<std::string> res;
+	str token;
+	std::vector<str> res;
 	
-	while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
+	while ((pos_end = s.find(delimiter, pos_start)) != str::npos) {
 		token = s.substr (pos_start, pos_end - pos_start);
 		pos_start = pos_end + delim_len;
 		res.push_back (token);
@@ -311,16 +349,11 @@ std::vector<str>	split(str s, str delimiter) {
 	return res;
 }
 
-bool	isCorrectVertice(str vertice) {
-	(void)vertice;
-	return (true);
-}
-
 bool isCorrectDigit(str value) {
 	if (value.empty())
 		return (false);
 
-	size_t start = 0;
+	size_t	start = 0;
 
 	if (value[0] == '-' || value[0] == '+') {
 		if (value.size() == 1)

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 14:45:31 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:37:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class scop {
 		void						addIndices(str newIndices);
 		glm::vec3				parseIndices(str indice);
 		void						normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
+		void						computeBoundingBox(void);
 
 		str						getMaterialFilename(void);
 		str						getName(void);
@@ -46,6 +47,7 @@ class scop {
 		std::vector<GLuint>	getIndices(void);
 		str						getUsemtl(void);
 		int						getSmooth(void);
+		glm::vec3				getCenter(void);
 		
 	private:
 		str							_materialFilename;
@@ -54,6 +56,9 @@ class scop {
 		int							_smooth;
 		std::vector<GLfloat>		_vertices;
 		std::vector<GLuint>		_indices;
+
+		glm::vec3					_center;
+		bool							_centerDefine;
 		
 		std::vector<glm::vec3>	_verticesPos;
 		std::vector<glm::vec3>	_verticesNormal;

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 18:51:09 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:35:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int main (int argc, char **argv)
 			if (!PAUSE)
 				rotation += 0.01f;
 
-			glm::mat4 model = glm::mat4(1.0f);
+			glm::mat4	model = glm::mat4(1.0f);
 			model = glm::rotate(model, rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 
 			shaderProgram.Activate();
