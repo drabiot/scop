@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 16:48:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 17:15:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ int main (int argc, char **argv)
 		float			lastFrame = 0.0f;
 		const float	targetFPS = 60.0f;
 		const float	targetFrameTime = 1.0f / targetFPS;
-
+		float			mixFactor = 0.0f;
+		float			transitionSpeed = 1.0f;
+		//auto			ease = [](float t) -> float {return t * t * (3.0f - 2.0f * t);};
 
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
@@ -49,7 +51,7 @@ int main (int argc, char **argv)
 			float	deltaTime = currentFrame - lastFrame;
 
 			if (deltaTime < targetFrameTime) {
-				float waitTime = targetFrameTime - deltaTime;
+				float	waitTime = targetFrameTime - deltaTime;
 				std::this_thread::sleep_for(std::chrono::duration<float>(waitTime));
 				currentFrame = static_cast<float>(glfwGetTime());
 				deltaTime = currentFrame - lastFrame;
@@ -57,21 +59,34 @@ int main (int argc, char **argv)
 			lastFrame = currentFrame;
 
 			if (!PAUSE)
-				rotation += 0.01f;
+				rotation += 1.0f * deltaTime;
 
-			glm::mat4	model = glm::mat4(1.0f);
+			//Fade Display
+			float target = DISPLAY ? 1.0f : 0.0f;
+			
+			mixFactor += (target - mixFactor) * transitionSpeed * deltaTime;
+
+			if (mixFactor < 0.0f) mixFactor = 0.0f;
+			if (mixFactor > 1.0f) mixFactor = 1.0f;
+
+			float easedMix = ease(mixFactor);
+
+			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::rotate(model, rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 
 			shaderProgram.Activate();
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			glUniform1f(glGetUniformLocation(shaderProgram.ID, "mixFactor"), easedMix);
 
-			glUniform1i(glGetUniformLocation(shaderProgram.ID, "display"), DISPLAY);
+			// Camera & Viewport
 			camera.Inputs(window);
 			camera.Matrix(45.0f, 0.1f, 1024.0f, shaderProgram, "camMatrix");
 			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);
 			glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
+
 			loopGame(data, window, shaderProgram, tx, utils);
 		}
+
 
 		deleteUtils(window, shaderProgram, tx, utils);
 	} catch (const std::exception &e) {

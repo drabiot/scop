@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 17:24:23 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 17:14:38 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,8 @@ void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils uti
 	//Delete window to avoid leaks
 	glfwDestroyWindow(window);
 	glfwTerminate();
+}
+
+float	ease(float t) {
+	return t * t * (3.0f - 2.0f * t);
 }
