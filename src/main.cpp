@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 15:28:50 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:48:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,25 @@ int main (int argc, char **argv)
 
 		glEnable(GL_DEPTH_TEST);
 
-		float rotation = 0.0f;
+		float 		rotation = 0.0f;
+		float			lastFrame = 0.0f;
+		const float	targetFPS = 60.0f;
+		const float	targetFrameTime = 1.0f / targetFPS;
+
 
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
+			float	currentFrame = static_cast<float>(glfwGetTime());
+			float	deltaTime = currentFrame - lastFrame;
+
+			if (deltaTime < targetFrameTime) {
+				float waitTime = targetFrameTime - deltaTime;
+				std::this_thread::sleep_for(std::chrono::duration<float>(waitTime));
+				currentFrame = static_cast<float>(glfwGetTime());
+				deltaTime = currentFrame - lastFrame;
+			}
+			lastFrame = currentFrame;
+
 			if (!PAUSE)
 				rotation += 0.01f;
 

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 13:12:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:49:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <vector>
 # include <cctype>
 # include <sys/stat.h>
+# include <thread>
+# include <chrono> 
 
 # include "glad.h"
 # include "glfw3.h"

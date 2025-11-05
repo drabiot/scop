@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:06:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/04 18:50:54 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 16:53:44 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,23 @@ void	Camera::Matrix(float FOVdeg, float nearPlane, float farPlane, Shader &shade
 
 void	Camera::Inputs(GLFWwindow *window) {
 	// Handles Display inputs
-	static double lastToggleTime = 0.0;
-	double currentTime = glfwGetTime();
+	static bool	displayKey = false;
+	static bool	pauseKey = false;
 
-	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && currentTime - lastToggleTime > 0.1) {
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && !displayKey) {
 		DISPLAY = !DISPLAY;
-		lastToggleTime = currentTime;
+		displayKey = true;
 	}
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && currentTime - lastToggleTime > 0.1) {
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_RELEASE && displayKey)
+		displayKey = false;
+
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !pauseKey) {
 		PAUSE = !PAUSE;
-		lastToggleTime = currentTime;
+		pauseKey = true;
 	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && pauseKey)
+		pauseKey = false;
+
 
 	// Handles key inputs
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
