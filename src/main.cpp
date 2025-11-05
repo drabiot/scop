@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 14:35:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 15:28:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main (int argc, char **argv)
 
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
 		utils		utils(data.getVertices());
-		Texture	tx("./resources/img/brick.bmp");
+		Texture	tx("./resources/img/mylittleponey.bmp");
 		Camera	camera(glm::vec3(0.0f, 0.0f, 25.0f));
 
 		glEnable(GL_DEPTH_TEST);

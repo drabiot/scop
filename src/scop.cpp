@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 14:40:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/05 15:31:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,8 +226,10 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		int idx = (i == 0 ? A.y : (i == 1 ? B.y : C.y));
 		if (idx >= 0 && idx < (int)_verticesText.size())
 			uvs[i] = _verticesText[idx];
-		else
-			uvs[i] = glm::vec2(0.0f, 0.0f); //Create Correct Textures Pos
+		else {
+			glm::vec3 n = (idx >= 0 && idx < (int)_verticesNormal.size()) ? _verticesNormal[idx] : normal;
+			uvs[i] = generateDefaultUV(positions[i], n);
+		}
 	}
 
 	glm::vec3 normals[3];
@@ -254,6 +256,21 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		_vertices.push_back(normals[i].y);
 		_vertices.push_back(normals[i].z);
 	}
+}
+
+glm::vec2	scop::generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal) {
+	glm::vec3 absN = glm::abs(normal);
+	glm::vec2 uv;
+
+	if (absN.x >= absN.y && absN.x >= absN.z)
+		uv = glm::vec2(pos.z, pos.y);
+	else if (absN.y >= absN.x && absN.y >= absN.z)
+		uv = glm::vec2(pos.x, pos.z);
+   else
+		uv = glm::vec2(pos.x, pos.y);
+
+	uv = (uv - glm::vec2(0.0f));
+	return (uv);
 }
 
 void	scop::computeBoundingBox() {
