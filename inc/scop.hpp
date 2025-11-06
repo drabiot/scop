@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 19:17:14 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:03:35 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "EBO.hpp"
 # include "Texture.hpp"
 # include "Camera.hpp"
+# include "Materials.hpp"
 
 # define WD_NAME "scop"
 
@@ -53,7 +54,7 @@ class scop {
 	private:
 		str							_materialFilename;
 		str							_name;
-		str							_usemtl;
+		std::vector<Material>	_usemtl;
 		int							_smooth;
 		std::vector<GLfloat>		_vertices;
 		std::vector<GLuint>		_indices;

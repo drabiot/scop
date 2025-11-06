@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 17:14:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:09:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,71 @@ void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils uti
 	//Delete window to avoid leaks
 	glfwDestroyWindow(window);
 	glfwTerminate();
+}
+
+bool	isDirectory(const char *path) {
+	struct stat s;
+	if (stat(path, &s) == 0)
+		return S_ISDIR(s.st_mode);
+	return false;
+}
+
+str	firstWord(str content) {
+	size_t	endWord = content.find(" ");
+	str		firstWord = content.substr(0, endWord);
+	
+	return (firstWord);
+}
+
+str	lastWord(str content) {
+	size_t	startPos = content.find(" ");
+	str		lastWord = content.substr(startPos + 1, content.npos);
+	
+	return (lastWord);
+}
+
+std::vector<str>	split(str s, str delimiter) {
+	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+	str token;
+	std::vector<str> res;
+	
+	while ((pos_end = s.find(delimiter, pos_start)) != str::npos) {
+		token = s.substr (pos_start, pos_end - pos_start);
+		pos_start = pos_end + delim_len;
+		res.push_back (token);
+	}
+	
+	res.push_back (s.substr (pos_start));
+	return res;
+}
+
+bool isCorrectDigit(str value) {
+	if (value.empty())
+		return (false);
+
+	size_t	start = 0;
+
+	if (value[0] == '-' || value[0] == '+') {
+		if (value.size() == 1)
+			return (false);
+		start = 1;
+	}
+
+	for (size_t i = start; i < value.size(); ++i) {
+		if (!std::isdigit(static_cast<unsigned char>(value[i])))
+			return (false);
+	}
+	return (true);
+}
+
+str trim(cref(str) s) {
+	size_t start = s.find_first_not_of(" \t\r\n");
+	
+	if (start == str::npos)
+		return ("");
+	
+	size_t end = s.find_last_not_of(" \t\r\n");
+	return (s.substr(start, end - start + 1));
 }
 
 float	ease(float t) {

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 17:14:35 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:09:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,13 @@ extern int	WD_HEIGHT;
 extern bool	DISPLAY;
 extern bool	PAUSE;
 
-float	ease(float t);
+float					ease(float t);
+bool					isDirectory(const char *path);
+void					parseMtl(str fileDir);
+str					firstWord(str content);
+str					lastWord(str content);
+std::vector<str>	split(str s, str delimiter);
+bool					isCorrectDigit(str value);
+str					trim(cref(str) s);
 
 #endif //UTILS_HPP

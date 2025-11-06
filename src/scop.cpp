@@ -6,19 +6,11 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 19:36:21 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:13:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
-
-bool					isDirectory(const char *path);
-str					firstWord(str content);
-str					lastWord(str content);
-std::vector<str>	split(str s, str delimiter);
-bool					isCorrectDigit(str value);
-str					trim(cref(str) s);
-
 
 scop::scop(char *filename) {
 	this->_centerDefine = false;
@@ -42,8 +34,8 @@ scop::scop(char *filename) {
 			setMaterialFilename(data, filename);
 		else if (type == "o")
 			setName(data);
-		else if (type == "usemtl")
-			setUsemtl(data);
+		//else if (type == "usemtl")
+		//	setUsemtl(data);
 		else if (type == "s") {
 			if (data == "off")
 				setSmooth(0);
@@ -82,12 +74,7 @@ void	scop::setMaterialFilename(str newMaterialFilename, char *filename) {
 		fileDir.clear();
 	fileDir += newMaterialFilename;
 
-	if (isDirectory(fileDir.c_str()))
-		throw std::runtime_error("Can't open a directory as a file");
-
-	std::ifstream file(fileDir);
-	if (!file.is_open())
-		throw std::runtime_error("Can't open file");
+	parseMtl(fileDir);
 }
 
 void	scop::setName(str newName) {
@@ -95,7 +82,8 @@ void	scop::setName(str newName) {
 }
 
 void	scop::setUsemtl(str newUsemtl) {
-	this->_usemtl = newUsemtl;
+	//this->_usemtl = newUsemtl;
+	(void)newUsemtl;
 }
 
 void	scop::setSmooth(int newSmooth) {
@@ -177,7 +165,7 @@ void	scop::addIndices(str newIndices) {
 		normalizeVector(v1, v3, v4);
 	}
 	else
-		throw std::runtime_error(str("Not the right number of Indices"));
+		throw std::runtime_error("Not the right number of Indices");
 }
 
 glm::vec3	scop::parseIndices(str indice) {
@@ -337,7 +325,8 @@ std::vector<GLuint>	scop::getIndices() {
 }
 
 str	scop::getUsemtl() {
-	return (this->_usemtl);
+	//return (this->_usemtl);
+	return (this->_name);
 }
 
 int			scop::getSmooth() {
@@ -346,71 +335,4 @@ int			scop::getSmooth() {
 
 glm::vec3	scop::getCenter() {
 	return (this->_center);
-}
-
-//Utils
-
-bool	isDirectory(const char *path) {
-	struct stat s;
-	if (stat(path, &s) == 0)
-		return S_ISDIR(s.st_mode);
-	return false;
-}
-
-str	firstWord(str content) {
-	size_t	endWord = content.find(" ");
-	str		firstWord = content.substr(0, endWord);
-	
-	return (firstWord);
-}
-
-str	lastWord(str content) {
-	size_t	startPos = content.find(" ");
-	str		lastWord = content.substr(startPos + 1, content.npos);
-	
-	return (lastWord);
-}
-
-std::vector<str>	split(str s, str delimiter) {
-	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-	str token;
-	std::vector<str> res;
-	
-	while ((pos_end = s.find(delimiter, pos_start)) != str::npos) {
-		token = s.substr (pos_start, pos_end - pos_start);
-		pos_start = pos_end + delim_len;
-		res.push_back (token);
-	}
-	
-	res.push_back (s.substr (pos_start));
-	return res;
-}
-
-bool isCorrectDigit(str value) {
-	if (value.empty())
-		return (false);
-
-	size_t	start = 0;
-
-	if (value[0] == '-' || value[0] == '+') {
-		if (value.size() == 1)
-			return (false);
-		start = 1;
-	}
-
-	for (size_t i = start; i < value.size(); ++i) {
-		if (!std::isdigit(static_cast<unsigned char>(value[i])))
-			return (false);
-	}
-	return (true);
-}
-
-str trim(cref(str) s) {
-	size_t start = s.find_first_not_of(" \t\r\n");
-	
-	if (start == str::npos)
-		return ("");
-	
-	size_t end = s.find_last_not_of(" \t\r\n");
-	return (s.substr(start, end - start + 1));
 }
