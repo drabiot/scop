@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 15:21:16 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 19:17:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class scop {
 		scop(char *filename);
 		~scop(void);
 
-		void						setMaterialFilename(str newMaterialFilename);
+		void						setMaterialFilename(str newMaterialFilename, char *filename);
 		void						setName(str newName);
 		void						setUsemtl(str newUsemtl);
 		void						setSmooth(int newSmooth);

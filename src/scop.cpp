@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/05 18:21:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 19:36:21 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ scop::scop(char *filename) {
 		str data = lastWord(line);
 
 		if (type == "mtllib")
-			setMaterialFilename(data);
+			setMaterialFilename(data, filename);
 		else if (type == "o")
 			setName(data);
 		else if (type == "usemtl")
@@ -66,8 +66,28 @@ scop::scop(char *filename) {
 
 scop::~scop() {}
 
-void	scop::setMaterialFilename(str newMaterialFilename) {
+void	scop::setMaterialFilename(str newMaterialFilename, char *filename) {
+	newMaterialFilename.erase(
+		std::remove_if(newMaterialFilename.begin(), newMaterialFilename.end(), [](unsigned char c){ return c == '\r' || c == ' ' || c == '\t'; }),
+		newMaterialFilename.end()
+	);
 	this->_materialFilename = newMaterialFilename;
+
+	str		fileDir = filename;
+	size_t	endOfSuffix = fileDir.find_last_of('/');
+
+	if (endOfSuffix != str::npos)
+		fileDir = fileDir.substr(0, endOfSuffix + 1);
+	else
+		fileDir.clear();
+	fileDir += newMaterialFilename;
+
+	if (isDirectory(fileDir.c_str()))
+		throw std::runtime_error("Can't open a directory as a file");
+
+	std::ifstream file(fileDir);
+	if (!file.is_open())
+		throw std::runtime_error("Can't open file");
 }
 
 void	scop::setName(str newName) {
@@ -86,8 +106,7 @@ void	scop::setSmooth(int newSmooth) {
 void	scop::addVerticesPos(str newVertices) {
 	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2, v3;
-	
-	//PRINT MAGENTA AND values[0] AND " " AND values[1] AND " " AND values[2] CENDL;
+
 	if (values.size() < 3)
 		throw std::runtime_error(str("Not the right number of Vertices for Position"));
 
@@ -103,8 +122,7 @@ void	scop::addVerticesPos(str newVertices) {
 void	scop::addVerticesNormal(str newVertices) {
 	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2, v3;
-	
-	//PRINT YELLOW AND values[0] AND " " AND values[1] AND " " AND values[2] CENDL;
+
 	if (values.size() < 3)
 		throw std::runtime_error(str("Not the right number of Vertices for Normal"));
 
@@ -120,8 +138,7 @@ void	scop::addVerticesNormal(str newVertices) {
 void	scop::addVerticesText(str newVertices) {
 	std::vector<str>	values = split(newVertices, " ");
 	GLfloat				v1, v2;
-	
-	//PRINT GREEN AND values[0] AND " " AND values[1] CENDL;
+
 	if (values.size() < 2)
 		throw std::runtime_error(str("Not the right number of Vertices for Texture"));
 
