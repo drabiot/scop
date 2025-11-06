@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:13:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:55:39 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,23 @@ scop::scop(char *filename) {
 
 	str line;
 	while (std::getline(file, line)) {
-		str type = firstWord(line);
-		str data = lastWord(line);
+		if (!line.empty() && line.back() == '\r')
+			line.pop_back();
+
+		if (line.empty() || line[0] == '#')
+			continue;
+
+		std::istringstream iss(line);
+		str type;
+		iss >> type;
+		str data;
+		std::getline(iss, data);
+		data.erase(0, data.find_first_not_of(" \t"));
 
 		if (type == "mtllib")
 			setMaterialFilename(data, filename);
 		else if (type == "o")
 			setName(data);
-		//else if (type == "usemtl")
-		//	setUsemtl(data);
 		else if (type == "s") {
 			if (data == "off")
 				setSmooth(0);
@@ -52,9 +60,13 @@ scop::scop(char *filename) {
 			addVerticesText(data);
 		else if (type == "f")
 			addIndices(data);
+		else if (type == "usemtl")
+			setUsemtl(data);
 	}
+
 	file.close();
 }
+
 
 scop::~scop() {}
 
@@ -324,9 +336,8 @@ std::vector<GLuint>	scop::getIndices() {
 	return (this->_indices);
 }
 
-str	scop::getUsemtl() {
-	//return (this->_usemtl);
-	return (this->_name);
+std::vector<Material>	scop::getUsemtl() {
+	return (this->_usemtl);
 }
 
 int			scop::getSmooth() {

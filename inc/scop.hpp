@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:03:35 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:31:50 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,28 @@ class scop {
 		scop(char *filename);
 		~scop(void);
 
-		void						setMaterialFilename(str newMaterialFilename, char *filename);
-		void						setName(str newName);
-		void						setUsemtl(str newUsemtl);
-		void						setSmooth(int newSmooth);
+		void							setMaterialFilename(str newMaterialFilename, char *filename);
+		void							setName(str newName);
+		void							setUsemtl(str newUsemtl);
+		void							setSmooth(int newSmooth);
 
-		void						addVerticesPos(str newVertices);
-		void						addVerticesNormal(str newVertices);
-		void						addVerticesText(str newVertices);
-		void						addIndices(str newIndices);
-		glm::vec3				parseIndices(str indice);
-		void						normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
-		glm::vec2				generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal);
-		void						computeBoundingBox(void);
+		void							addVerticesPos(str newVertices);
+		void							addVerticesNormal(str newVertices);
+		void							addVerticesText(str newVertices);
+		void							parseMtl(str fileDir);
+		void							addIndices(str newIndices);
+		glm::vec3					parseIndices(str indice);
+		void							normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
+		glm::vec2					generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal);
+		void							computeBoundingBox(void);
 
-		str						getMaterialFilename(void);
-		str						getName(void);
-		std::vector<GLfloat>	getVertices(void);
-		std::vector<GLuint>	getIndices(void);
-		str						getUsemtl(void);
-		int						getSmooth(void);
-		glm::vec3				getCenter(void);
+		str							getMaterialFilename(void);
+		str							getName(void);
+		std::vector<GLfloat>		getVertices(void);
+		std::vector<GLuint>		getIndices(void);
+		std::vector<Material>	getUsemtl(void);
+		int							getSmooth(void);
+		glm::vec3					getCenter(void);
 		
 	private:
 		str							_materialFilename;

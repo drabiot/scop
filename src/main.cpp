@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 19:36:26 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/06 20:46:52 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int main (int argc, char **argv)
 		const float	targetFrameTime = 1.0f / targetFPS;
 		float			mixFactor = 0.0f;
 		float			transitionSpeed = 1.0f;
-		//auto			ease = [](float t) -> float {return t * t * (3.0f - 2.0f * t);};
 
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
