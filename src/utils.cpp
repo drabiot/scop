@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:22:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 18:20:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,72 @@ utils::utils(std::vector<GLfloat> vertices) : VBO1(vertices.data(), vertices.siz
 	//EBO1.Unbind();
 }
 
-void	initWindow(scop data, GLFWwindow **window) {
+void    opengErrorMsg(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+{
+	(void)length;
+	(void)source;
+	(void)id;
+	(void)userParam;
+    std::string severityColor;
+    switch (severity){
+        case GL_DEBUG_SEVERITY_LOW:
+            severityColor = GREEN;
+            break;
+        case GL_DEBUG_SEVERITY_MEDIUM:
+            severityColor =  YELLOW;
+            break;
+        case GL_DEBUG_SEVERITY_HIGH:
+            severityColor =  RED;
+            break;
+        default:
+            return ; //these are notifications and not really important
+            severityColor =  WHITE;
+    }
+
+    PRINT RED "Opengl Message: " << severityColor;
+
+    switch (type) {
+        case GL_DEBUG_TYPE_ERROR:
+            PRINT "ERROR; ";
+            break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+            PRINT "DEPRECATED_BEHAVIOR; ";
+            break;
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+            PRINT "UNDEFINED_BEHAVIOR; ";
+            break;
+        case GL_DEBUG_TYPE_PORTABILITY:
+            PRINT "PORTABILITY; ";
+            break;
+        case GL_DEBUG_TYPE_PERFORMANCE:
+            PRINT "PERFORMANCE; ";
+            break;
+        case GL_DEBUG_TYPE_OTHER:
+            PRINT "OTHER; ";
+            break;
+        default:
+            PRINT "NO TYPE; ";
+    }
+
+    PRINT message CENDL;
+}
+
+void	initWindow(GLFWwindow **window) {
 	//Initialize GLFW
 	glfwInit();
-
+	
 	//Tell GLFW that we use version 3.3 of OpenGL
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+		
 	//Tell GLFW that we are using CORE profile so we only have modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+	
 	//Create a GLFW window object & protect it
-	*window = glfwCreateWindow(WD_WIDTH, WD_HEIGHT, (str(WD_NAME) + ":" + data.getName()).c_str(), NULL, NULL);
-
+	*window = glfwCreateWindow(WD_WIDTH, WD_HEIGHT, (str(WD_NAME) + ":").c_str(), NULL, NULL);
+	
 	if (!*window) {
 		glfwTerminate();
 		throw std::runtime_error(std::string("Failed to create GLFW window"));
@@ -45,6 +97,8 @@ void	initWindow(scop data, GLFWwindow **window) {
 
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(*window);
+
+	//glDebugMessageCallback(opengErrorMsg, 0);
 }
 
 void	initGlad() {
@@ -61,11 +115,11 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, u
 	// Tell OpenGL which Shader Program we want to use
 	shaderProgram.Activate();
 
-	tx.Bind(shaderProgram, 0);
+	//tx.Bind(shaderProgram, 0);
+	(void)tx;
 
 	utils.VAO1.Bind();
 	glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
-	//glDrawElements(GL_TRIANGLES, data.getIndices().size(), GL_UNSIGNED_INT, 0);
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
@@ -75,8 +129,8 @@ void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils uti
 	// Delete all the objects we've created
 	utils.VAO1.Delete();
 	utils.VBO1.Delete();
-	//utils.EBO1.Delete();
-	tx.Delete();
+	(void)tx;
+	//tx.Delete();
 	shaderProgram.Delete();
 
 	//Delete window to avoid leaks

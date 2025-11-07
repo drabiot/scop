@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 16:39:53 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 18:15:56 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class scop {
 		void							addVerticesNormal(str newVertices);
 		void							addVerticesText(str newVertices);
 		void							parseMtl(str fileDir, str fileSuffix);
+		void							makeTexArray(void);
 		void							addIndices(str newIndices);
 		glm::vec3					parseIndices(str indice);
 		void							normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
@@ -69,6 +70,8 @@ class scop {
 
 		std::vector<GLuint>		_indicesNormal;
 		std::vector<GLuint>		_indicesText;
+
+		GLuint						_arrayId = 0;
 };
 
 class	utils {
@@ -79,7 +82,7 @@ class	utils {
 		VBO	VBO1;
 };
 
-void	initWindow(scop data, GLFWwindow **window);
+void	initWindow(GLFWwindow **window);
 void	initGlad(void);
 void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils);
 void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils);

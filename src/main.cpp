@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:46:52 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 18:16:08 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int main (int argc, char **argv)
 		return (1);
 	}
 	try {
-		scop data(argv[1]);
-
 		GLFWwindow *window;
-		initWindow(data, &window);
+		initWindow(&window);
 		initGlad();
+		scop data(argv[1]);
+		
 
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
 		utils		utils(data.getVertices());

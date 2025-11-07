@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:51:30 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 17:06:37 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 18:20:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,3 +81,34 @@ void scop::parseMtl(str fileDir, str fileSuffix) {
     file.close();
 }
 
+void	scop::makeTexArray(void) {
+	int	layer = 0;
+	int	height = 0;
+	int	width = 0;
+	int	depth = 0;
+
+	for (size_t i = 0; i < this->_usemtl.size(); ++i) {
+		++layer;
+		width = glm::max(width, this->_usemtl[i].texture.width);
+		height = glm::max(height, this->_usemtl[i].texture.height);
+   }
+
+
+	glGenTextures(1, &_arrayId);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, _arrayId);
+	glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, width, height, layer);
+
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+
+	for (size_t i = 0; i < this->_usemtl.size(); ++i) {
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, depth, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, this->_usemtl[i].texture.data.data());
+		++depth;
+   }
+
+	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+}

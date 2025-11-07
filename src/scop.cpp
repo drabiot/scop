@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 16:40:32 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 18:06:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	scop::setMaterialFilename(str newMaterialFilename, char *filename) {
 	str	mtlDir = fileDir + newMaterialFilename;
 
 	parseMtl(mtlDir, fileDir);
+	makeTexArray();
 }
 
 void	scop::setName(str newName) {
