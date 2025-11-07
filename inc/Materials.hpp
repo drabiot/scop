@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:52:39 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:26:19 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:38:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define MATERIALS_HPP
 
 # include "utils.hpp"
+# include "Texture.hpp"
 
 class Material {
 	public:
 		Material(void);
-		Material(str file, glm::vec3 amCo, glm::vec3 diCo, glm::vec3 spCo, double diss, int illum, double spExp, str tex);
 		~Material(void);
 
 		str			name;
@@ -28,7 +28,7 @@ class Material {
 		double		dissolve;				//Transparency
 		int			illum;					//Type of illumination
 		double		specularExponant;		//Shininess
-		str			texture;
+		Texture		texture;
 };
 
 #endif //MATERIALS_HPP

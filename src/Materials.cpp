@@ -6,28 +6,17 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:51:30 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:46:10 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:06:37 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
 
-Material::Material() : name(""), ambientColor(0.0f, 0.0f, 0.0f), diffuseColor(0.0f, 0.0f, 0.0f), specularColor(0.0f, 0.0f, 0.0f), dissolve(1.0), illum(0), specularExponant(0.0), texture("") {};
-
-Material::Material(str file, glm::vec3 amCo, glm::vec3 diCo, glm::vec3 spCo, double diss, int illum, double spExp, str tex) {
-	this->name = file;
-	this->ambientColor = amCo;
-	this->diffuseColor = diCo;
-	this->specularColor = spCo;
-	this->dissolve = diss;
-	this->illum = illum;
-	this->specularExponant = spExp;
-	this->texture = tex;
-}
+Material::Material() : name(""), ambientColor(0.0f, 0.0f, 0.0f), diffuseColor(0.0f, 0.0f, 0.0f), specularColor(0.0f, 0.0f, 0.0f), dissolve(1.0), illum(0), specularExponant(0.0) {};
 
 Material::~Material() {}
 
-void scop::parseMtl(str fileDir) {
+void scop::parseMtl(str fileDir, str fileSuffix) {
     if (isDirectory(fileDir.c_str()))
         throw std::runtime_error("Can't open a directory as a file");
 
@@ -83,7 +72,7 @@ void scop::parseMtl(str fileDir) {
             current.illum = illum;
         } else if (type == "map_Kd") {
             data.erase(std::remove_if(data.begin(), data.end(), [](unsigned char c){ return c == '\r' || c == '\t'; }), data.end());
-            current.texture = data;
+            current.texture.LoadImage(str("./" + fileSuffix + data).c_str());
         }
     }
     if (!current.name.empty())

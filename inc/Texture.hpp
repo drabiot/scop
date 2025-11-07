@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:10:34 by mbirou            #+#    #+#             */
-/*   Updated: 2025/10/17 14:32:21 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:38:13 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class Texture
 	public:
 		GLuint	ID;
 		GLenum	type;
+		Texture(void) {;}
 		Texture(const char *path);
 
 		void	LoadImage(const char *path);

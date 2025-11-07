@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:31:50 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/07 16:39:53 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class scop {
 		void							addVerticesPos(str newVertices);
 		void							addVerticesNormal(str newVertices);
 		void							addVerticesText(str newVertices);
-		void							parseMtl(str fileDir);
+		void							parseMtl(str fileDir, str fileSuffix);
 		void							addIndices(str newIndices);
 		glm::vec3					parseIndices(str indice);
 		void							normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
