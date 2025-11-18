@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 18:16:08 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:30:23 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,18 @@ int main (int argc, char **argv)
 		
 
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
-		utils		utils(data.getVertices());
+		utils	utils(data.getVertices());
 		Texture	tx("./resources/img/mylittleponey.bmp");
 		Camera	camera(glm::vec3(0.0f, 0.0f, 25.0f));
 
 		glEnable(GL_DEPTH_TEST);
 
 		float 		rotation = 0.0f;
-		float			lastFrame = 0.0f;
+		float		lastFrame = 0.0f;
 		const float	targetFPS = 60.0f;
 		const float	targetFrameTime = 1.0f / targetFPS;
-		float			mixFactor = 0.0f;
-		float			transitionSpeed = 1.0f;
+		float		mixFactor = 0.0f;
+		float		transitionSpeed = 1.0f;
 
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
@@ -76,6 +76,7 @@ int main (int argc, char **argv)
 			shaderProgram.Activate();
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 			glUniform1f(glGetUniformLocation(shaderProgram.ID, "mixFactor"), easedMix);
+
 
 			// Camera & Viewport
 			camera.Inputs(window);

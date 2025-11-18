@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:51:30 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 18:20:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:40:17 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ Material::Material() : name(""), ambientColor(0.0f, 0.0f, 0.0f), diffuseColor(0.
 Material::~Material() {}
 
 void scop::parseMtl(str fileDir, str fileSuffix) {
+	int	id = 0;
     if (isDirectory(fileDir.c_str()))
         throw std::runtime_error("Can't open a directory as a file");
 
@@ -43,9 +44,11 @@ void scop::parseMtl(str fileDir, str fileSuffix) {
 
         if (type == "newmtl") {
             if (!current.name.empty())
-                _usemtl.push_back(current);
+                _usemtl.insert({current.name, current});
             current = Material();
             current.name = data;
+			current.id = id;
+			id++;
         } else if (type == "Ka") {
             float r, g, b;
             std::istringstream(data) >> r >> g >> b;
@@ -76,7 +79,7 @@ void scop::parseMtl(str fileDir, str fileSuffix) {
         }
     }
     if (!current.name.empty())
-        _usemtl.push_back(current);
+        _usemtl.insert({current.name, current});
 
     file.close();
 }
@@ -87,10 +90,10 @@ void	scop::makeTexArray(void) {
 	int	width = 0;
 	int	depth = 0;
 
-	for (size_t i = 0; i < this->_usemtl.size(); ++i) {
+	for (auto mtl : _usemtl) {
 		++layer;
-		width = glm::max(width, this->_usemtl[i].texture.width);
-		height = glm::max(height, this->_usemtl[i].texture.height);
+		width = glm::max(width, mtl.second.texture.width);
+		height = glm::max(height, mtl.second.texture.height);
    }
 
 
@@ -104,8 +107,8 @@ void	scop::makeTexArray(void) {
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 
-	for (size_t i = 0; i < this->_usemtl.size(); ++i) {
-		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, depth, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, this->_usemtl[i].texture.data.data());
+	for (auto mtl : _usemtl) {
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0,  mtl.second.id, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, mtl.second.texture.data.data());
 		++depth;
    }
 

@@ -6,13 +6,13 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/11/06 19:51:26 by tchartie         ###   ########.fr        #
+#    Updated: 2025/11/18 18:32:21 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #============ NAME ============#
 
-NAME				= 	scop
+NAME			= 	scop
 
 #========= COMPILATOR =========#
 
@@ -21,31 +21,31 @@ CC 				= 	c++
 #=========== FLAGS ============#
 
 INC_DIR			= 	./inc/ \
-						./GLFW/include/GLFW/ \
-						./inc/glad/. \
-						./src/ \
-						./glm/glm/ \
-						./glm/glm/gtc/
+					./GLFW/include/GLFW/ \
+					./inc/glad/. \
+					./src/ \
+					./glm/glm/ \
+					./glm/glm/gtc/
 
 CLASSE_H			=	Camera/ \
-						ChunkMaker/ \
-						FrameBuffer/ \
-						Texture/ \
-						Shader/ \
-						Camera/ \
-						Window/ \
-						Managers/ \
-						UI/ \
-						UI/Elements \
-						UI/Interfaces \
-						Terminal/ \
-						Scenes/ \
-						World/
+					ChunkMaker/ \
+					FrameBuffer/ \
+					Texture/ \
+					Shader/ \
+					Camera/ \
+					Window/ \
+					Managers/ \
+					UI/ \
+					UI/Elements \
+					UI/Interfaces \
+					Terminal/ \
+					Scenes/ \
+					World/
 
 GLFWARCHIVE		=	GLFW/build/src/libglfw3.a
 
 INC_DIR			:=	$(addprefix -I, $(INC_DIR))
-CLASSE_H			:= $(addprefix -I./src/, $(CLASSE_H))
+CLASSE_H		:=	$(addprefix -I./src/, $(CLASSE_H))
 
 CFLAGS 			= 	-MP -MMD -Wall -Werror -Wextra -g -std=c++17
 
@@ -54,32 +54,32 @@ MAKEFLAGS		=	--no-print-directory
 #=========== COLOR ============#
 
 BASE_COLOR 		=	\033[0;39m
-GRAY 				=	\033[0;90m
-RED 				=	\033[0;91m
+GRAY 			=	\033[0;90m
+RED 			=	\033[0;91m
 GREEN 			=	\033[0;92m
 YELLOW 			=	\033[0;93m
-BLUE 				=	\033[0;94m
+BLUE 			=	\033[0;94m
 MAGENTA			=	\033[0;95m
-CYAN 				=	\033[0;96m
-WHITE				=	\033[0;97m
+CYAN 			=	\033[0;96m
+WHITE			=	\033[0;97m
 
 #========== SOURCES ===========#
 
-SRC_DIR 			= 	src/
+SRC_DIR 		= 	src/
 SRC_NAME 		=	main.cpp \
-						utils.cpp \
-						scop.cpp \
-						glad/glad.cpp \
-						Shader.cpp \
-						VAO.cpp \
-						VBO.cpp \
-						EBO.cpp \
-						Texture.cpp \
-						Camera.cpp \
-						Materials.cpp
+					utils.cpp \
+					scop.cpp \
+					glad/glad.cpp \
+					Shader.cpp \
+					VAO.cpp \
+					VBO.cpp \
+					EBO.cpp \
+					Texture.cpp \
+					Camera.cpp \
+					Materials.cpp
 
-OBJ_DIR 			=	obj/
-OBJ_NAME			=	$(SRC_NAME:.cpp=.o)
+OBJ_DIR 		=	obj/
+OBJ_NAME		=	$(SRC_NAME:.cpp=.o)
 OBJ				=	$(patsubst %, $(OBJ_DIR)%, $(OBJ_NAME))
 
 all:		glfw glad glm $(NAME)

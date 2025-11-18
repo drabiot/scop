@@ -2,10 +2,10 @@
 out vec4 FragColor;
 
 in vec3  color;
-in vec2  texCoord;
+in vec3  texCoord;
 
-uniform sampler2D tex0;
-uniform float mixFactor; // 0.0 = couleur, 1.0 = texture
+uniform sampler2DArray tex0;
+uniform float mixFactor;
 
 void main()
 {

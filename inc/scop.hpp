@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 18:15:56 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:36:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,31 @@ class scop {
 		void							parseMtl(str fileDir, str fileSuffix);
 		void							makeTexArray(void);
 		void							addIndices(str newIndices);
-		glm::vec3					parseIndices(str indice);
+		glm::vec3						parseIndices(str indice);
 		void							normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
-		glm::vec2					generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal);
+		glm::vec2						generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal);
 		void							computeBoundingBox(void);
 
 		str							getMaterialFilename(void);
 		str							getName(void);
 		std::vector<GLfloat>		getVertices(void);
-		std::vector<GLuint>		getIndices(void);
-		std::vector<Material>	getUsemtl(void);
+		std::vector<GLuint>			getIndices(void);
 		int							getSmooth(void);
 		glm::vec3					getCenter(void);
+		GLuint						getArrayId(void);
+
+		int						id;
 		
 	private:
-		str							_materialFilename;
-		str							_name;
-		std::vector<Material>	_usemtl;
-		int							_smooth;
-		std::vector<GLfloat>		_vertices;
+		str						_materialFilename;
+		str						_name;
+		std::map<str, Material>	_usemtl;
+		int						_smooth;
+		std::vector<GLfloat>	_vertices;
 		std::vector<GLuint>		_indices;
 
-		glm::vec3					_center;
-		bool							_centerDefine;
+		glm::vec3				_center;
+		bool					_centerDefine;
 		
 		std::vector<glm::vec3>	_verticesPos;
 		std::vector<glm::vec3>	_verticesNormal;
@@ -71,7 +73,7 @@ class scop {
 		std::vector<GLuint>		_indicesNormal;
 		std::vector<GLuint>		_indicesText;
 
-		GLuint						_arrayId = 0;
+		GLuint					_arrayId = 0;
 };
 
 class	utils {

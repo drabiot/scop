@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 18:20:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:31:05 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 utils::utils(std::vector<GLfloat> vertices) : VBO1(vertices.data(), vertices.size() * sizeof(GLfloat)) {
 	// Links VBO to VAO
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 9 * sizeof(float), (void *)0);
 	//Color & Texture
-	VAO1.LinkAttrib(VBO1, 1, 2, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-	VAO1.LinkAttrib(VBO1, 2, 3, GL_FLOAT, 8 * sizeof(float), (void *)(5 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 9 * sizeof(float), (void *)(3 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 2, 3, GL_FLOAT, 9 * sizeof(float), (void *)(6 * sizeof(float)));
 	// Unbind all to prevent accidentally modifying them
 	VAO1.Unbind();
 	VBO1.Unbind();
@@ -97,8 +97,6 @@ void	initWindow(GLFWwindow **window) {
 
 	// Introduce the window into the current context
 	glfwMakeContextCurrent(*window);
-
-	//glDebugMessageCallback(opengErrorMsg, 0);
 }
 
 void	initGlad() {
@@ -107,6 +105,7 @@ void	initGlad() {
 	
 	// Specify the viewport of OpenGL in the Window
 	glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
+	glDebugMessageCallback(opengErrorMsg, 0);
 }
 
 void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils) {
@@ -117,6 +116,9 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, u
 
 	//tx.Bind(shaderProgram, 0);
 	(void)tx;
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, data.getArrayId());
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex0"), 0);
 
 	utils.VAO1.Bind();
 	glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
@@ -131,6 +133,8 @@ void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils uti
 	utils.VBO1.Delete();
 	(void)tx;
 	//tx.Delete();
+	//for (size_t i = 0; i < data.getUsemtl().size(); ++i)
+	//	data.getUsemtl()[i].texture.Delete();
 	shaderProgram.Delete();
 
 	//Delete window to avoid leaks

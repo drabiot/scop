@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:52:39 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 16:38:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:52:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class Material {
 		Material(void);
 		~Material(void);
 
+		int			id;
 		str			name;
 		glm::vec3	ambientColor;
 		glm::vec3	diffuseColor;

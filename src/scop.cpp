@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/07 18:06:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:43:54 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void	scop::setName(str newName) {
 }
 
 void	scop::setUsemtl(str newUsemtl) {
-	//this->_usemtl = newUsemtl;
-	(void)newUsemtl;
+	this->id = this->_usemtl[newUsemtl].id;
+	//PRINT MAGENTA AND newUsemtl AND RED AND " " AND this->id CENDL;
 }
 
 void	scop::setSmooth(int newSmooth) {
@@ -145,6 +145,7 @@ void	scop::addVerticesText(str newVertices) {
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
+	//
 
 	glm::vec2	pos(v1, v2);
 
@@ -271,6 +272,7 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		// Texture coords
 		_vertices.push_back(uvs[i].x);
 		_vertices.push_back(uvs[i].y);
+		_vertices.push_back(this->id);
 
 		// Normals
 		_vertices.push_back(normals[i].x);
@@ -337,14 +339,14 @@ std::vector<GLuint>	scop::getIndices() {
 	return (this->_indices);
 }
 
-std::vector<Material>	scop::getUsemtl() {
-	return (this->_usemtl);
-}
-
 int			scop::getSmooth() {
 	return (this->_smooth);
 }
 
 glm::vec3	scop::getCenter() {
 	return (this->_center);
+}
+
+GLuint	scop::getArrayId() {
+	return (this->_arrayId);
 }

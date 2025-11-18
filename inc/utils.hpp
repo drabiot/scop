@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/06 20:21:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:03:58 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sstream>
 # include <iostream>
 # include <vector>
+# include <map>
 # include <cctype>
 # include <sys/stat.h>
 # include <thread>
