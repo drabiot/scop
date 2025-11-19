@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/19 14:04:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:21:27 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,7 @@ void	initGlad() {
 	glDebugMessageCallback(opengErrorMsg, 0);
 }
 
-void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, utils utils) {
-	// Clean the back buffer and depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, utils utils) {
 	// Tell OpenGL which Shader Program we want to use
 	shaderProgram.Activate();
 
@@ -123,6 +121,7 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, utils utils) 
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+	(void)shaderSkybox;
 }
 
 void	deleteUtils(GLFWwindow *window, Shader shaderProgram, utils utils) {
