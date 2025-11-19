@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 19:03:58 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:01:30 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ extern int	WD_HEIGHT;
 extern bool	DISPLAY;
 extern bool	PAUSE;
 
-float					ease(float t);
-bool					isDirectory(const char *path);
+float				ease(float t);
+bool				isDirectory(const char *path);
 str					firstWord(str content);
 str					lastWord(str content);
 std::vector<str>	split(str s, str delimiter);
-bool					isCorrectDigit(str value);
+bool				isCorrectDigit(str value);
 str					trim(cref(str) s);
 
 #endif //UTILS_HPP

@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/11/18 18:32:21 by tchartie         ###   ########.fr        #
+#    Updated: 2025/11/19 13:48:23 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,6 @@ SRC_NAME 		=	main.cpp \
 					Shader.cpp \
 					VAO.cpp \
 					VBO.cpp \
-					EBO.cpp \
 					Texture.cpp \
 					Camera.cpp \
 					Materials.cpp

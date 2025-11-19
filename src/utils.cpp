@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 19:31:05 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:04:22 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,12 @@ void	initGlad() {
 	glDebugMessageCallback(opengErrorMsg, 0);
 }
 
-void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils) {
+void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, utils utils) {
 	// Clean the back buffer and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// Tell OpenGL which Shader Program we want to use
 	shaderProgram.Activate();
 
-	//tx.Bind(shaderProgram, 0);
-	(void)tx;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, data.getArrayId());
 	glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex0"), 0);
@@ -127,14 +125,11 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, u
 	glfwPollEvents();
 }
 
-void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils) {
+void	deleteUtils(GLFWwindow *window, Shader shaderProgram, utils utils) {
 	// Delete all the objects we've created
 	utils.VAO1.Delete();
 	utils.VBO1.Delete();
-	(void)tx;
-	//tx.Delete();
-	//for (size_t i = 0; i < data.getUsemtl().size(); ++i)
-	//	data.getUsemtl()[i].texture.Delete();
+
 	shaderProgram.Delete();
 
 	//Delete window to avoid leaks

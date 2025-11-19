@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 19:43:54 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:55:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ scop::scop(char *filename) {
 	if (!file.is_open())
 		throw std::runtime_error("Can't open file");
 
-	str line;
+	str	line;
 	while (std::getline(file, line)) {
 		if (!line.empty() && line.back() == '\r')
 			line.pop_back();
@@ -64,6 +64,15 @@ scop::scop(char *filename) {
 			setUsemtl(data);
 	}
 
+	if (this->_usemtl.empty()) {
+		Material	current = Material();
+		
+		current.texture.LoadImage("./resources/img/mylittleponey.bmp");
+		current.id = 0;
+		this->_usemtl.insert({"", current});
+		makeTexArray();
+	}
+
 	file.close();
 }
 
@@ -96,7 +105,6 @@ void	scop::setName(str newName) {
 
 void	scop::setUsemtl(str newUsemtl) {
 	this->id = this->_usemtl[newUsemtl].id;
-	//PRINT MAGENTA AND newUsemtl AND RED AND " " AND this->id CENDL;
 }
 
 void	scop::setSmooth(int newSmooth) {
@@ -145,7 +153,6 @@ void	scop::addVerticesText(str newVertices) {
 
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
-	//
 
 	glm::vec2	pos(v1, v2);
 

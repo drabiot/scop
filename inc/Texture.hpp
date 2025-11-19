@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:10:34 by mbirou            #+#    #+#             */
-/*   Updated: 2025/11/07 16:38:13 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:01:19 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Texture
 		void	Unbind();
 		void	Delete();
 
-		int								width;
-		int								height;
+		int							width;
+		int							height;
 		std::vector<unsigned char>	data;
 };

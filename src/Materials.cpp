@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:51:30 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 19:40:17 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:46:08 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void scop::parseMtl(str fileDir, str fileSuffix) {
     if (!file.is_open())
         throw std::runtime_error("Can't open file");
 
-    Material current;
-    str line;
+    Material	current;
+    str			line;
 
     while (std::getline(file, line)) {
         if (!line.empty() && line.back() == '\r')
@@ -36,16 +36,17 @@ void scop::parseMtl(str fileDir, str fileSuffix) {
             continue;
 
         std::istringstream iss(line);
-        str type;
+        str	type;
         iss >> type;
-        str data;
+        str	data;
         std::getline(iss, data);
         data.erase(0, data.find_first_not_of(" \t"));
 
         if (type == "newmtl") {
             if (!current.name.empty())
                 _usemtl.insert({current.name, current});
-            current = Material();
+			current = Material();
+			current.texture.LoadImage("./resources/img/mylittleponey.bmp");
             current.name = data;
 			current.id = id;
 			id++;
@@ -78,23 +79,24 @@ void scop::parseMtl(str fileDir, str fileSuffix) {
             current.texture.LoadImage(str("./" + fileSuffix + data).c_str());
         }
     }
-    if (!current.name.empty())
+    if (!current.name.empty()) {
         _usemtl.insert({current.name, current});
+	}
 
     file.close();
 }
 
-void	scop::makeTexArray(void) {
+void	scop::makeTexArray() {
 	int	layer = 0;
 	int	height = 0;
 	int	width = 0;
 	int	depth = 0;
 
-	for (auto mtl : _usemtl) {
+	for (auto mtl : this->_usemtl) {
 		++layer;
 		width = glm::max(width, mtl.second.texture.width);
 		height = glm::max(height, mtl.second.texture.height);
-   }
+	}
 
 
 	glGenTextures(1, &_arrayId);
@@ -107,10 +109,10 @@ void	scop::makeTexArray(void) {
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 
-	for (auto mtl : _usemtl) {
+	for (auto mtl : this->_usemtl) {
 		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0,  mtl.second.id, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, mtl.second.texture.data.data());
 		++depth;
-   }
+	}
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);

@@ -6,14 +6,14 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 19:30:23 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:03:42 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
 
-int	WD_WIDTH = 800;
-int	WD_HEIGHT = 800;
+int		WD_WIDTH = 800;
+int		WD_HEIGHT = 800;
 bool	DISPLAY = false;
 bool	PAUSE = false;
 
@@ -32,7 +32,6 @@ int main (int argc, char **argv)
 
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
 		utils	utils(data.getVertices());
-		Texture	tx("./resources/img/mylittleponey.bmp");
 		Camera	camera(glm::vec3(0.0f, 0.0f, 25.0f));
 
 		glEnable(GL_DEPTH_TEST);
@@ -54,9 +53,12 @@ int main (int argc, char **argv)
 				std::this_thread::sleep_for(std::chrono::duration<float>(waitTime));
 				currentFrame = static_cast<float>(glfwGetTime());
 				deltaTime = currentFrame - lastFrame;
+
 			}
 			lastFrame = currentFrame;
 
+			std::string title = "scop:" + data.getName() + " FPS " + std::to_string(1.0f / deltaTime);
+			glfwSetWindowTitle(window, title.c_str());
 			if (!PAUSE)
 				rotation += 1.0f * deltaTime;
 
@@ -84,11 +86,11 @@ int main (int argc, char **argv)
 			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);
 			glViewport(0, 0, WD_WIDTH, WD_HEIGHT);
 
-			loopGame(data, window, shaderProgram, tx, utils);
+			loopGame(data, window, shaderProgram, utils);
 		}
 
 
-		deleteUtils(window, shaderProgram, tx, utils);
+		deleteUtils(window, shaderProgram, utils);
 	} catch (const std::exception &e) {
 		ERROR RED "Error: " AND e.what() CENDL;
 	}

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:17:26 by mbirou            #+#    #+#             */
-/*   Updated: 2025/10/17 14:33:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 13:49:28 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,7 @@ void	Texture::Bind(Shader &shader, int offset)
 {
 	glActiveTexture(GL_TEXTURE0 + offset);
 	glBindTexture(GL_TEXTURE_2D, ID);
-	if (offset == 0)
-		glUniform1i(glGetUniformLocation(shader.ID, "tex0"), offset);
-	else
-		glUniform1i(glGetUniformLocation(shader.ID, "tex1"), offset);
+	glUniform1i(glGetUniformLocation(shader.ID, "tex"), offset);
 }
 
 void	Texture::Unbind()

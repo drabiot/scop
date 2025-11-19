@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 19:36:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/19 14:04:41 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "Shader.hpp"
 # include "VAO.hpp"
 # include "VBO.hpp"
-# include "EBO.hpp"
 # include "Texture.hpp"
 # include "Camera.hpp"
 # include "Materials.hpp"
@@ -29,31 +28,31 @@ class scop {
 		scop(char *filename);
 		~scop(void);
 
-		void							setMaterialFilename(str newMaterialFilename, char *filename);
-		void							setName(str newName);
-		void							setUsemtl(str newUsemtl);
-		void							setSmooth(int newSmooth);
+		void					setMaterialFilename(str newMaterialFilename, char *filename);
+		void					setName(str newName);
+		void					setUsemtl(str newUsemtl);
+		void					setSmooth(int newSmooth);
 
-		void							addVerticesPos(str newVertices);
-		void							addVerticesNormal(str newVertices);
-		void							addVerticesText(str newVertices);
-		void							parseMtl(str fileDir, str fileSuffix);
-		void							makeTexArray(void);
-		void							addIndices(str newIndices);
-		glm::vec3						parseIndices(str indice);
-		void							normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
-		glm::vec2						generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal);
-		void							computeBoundingBox(void);
+		void					addVerticesPos(str newVertices);
+		void					addVerticesNormal(str newVertices);
+		void					addVerticesText(str newVertices);
+		void					parseMtl(str fileDir, str fileSuffix);
+		void					makeTexArray(void);
+		void					addIndices(str newIndices);
+		glm::vec3				parseIndices(str indice);
+		void					normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C);
+		glm::vec2				generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal);
+		void					computeBoundingBox(void);
 
-		str							getMaterialFilename(void);
-		str							getName(void);
-		std::vector<GLfloat>		getVertices(void);
-		std::vector<GLuint>			getIndices(void);
-		int							getSmooth(void);
-		glm::vec3					getCenter(void);
-		GLuint						getArrayId(void);
+		str						getMaterialFilename(void);
+		str						getName(void);
+		std::vector<GLfloat>	getVertices(void);
+		std::vector<GLuint>		getIndices(void);
+		int						getSmooth(void);
+		glm::vec3				getCenter(void);
+		GLuint					getArrayId(void);
 
-		int						id;
+		int						id = 0;
 		
 	private:
 		str						_materialFilename;
@@ -86,7 +85,7 @@ class	utils {
 
 void	initWindow(GLFWwindow **window);
 void	initGlad(void);
-void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils);
-void	deleteUtils(GLFWwindow *window, Shader shaderProgram, Texture tx, utils utils);
+void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, utils utils);
+void	deleteUtils(GLFWwindow *window, Shader shaderProgram, utils utils);
 
 #endif //SCOP_HPP
