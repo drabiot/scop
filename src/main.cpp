@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/20 18:46:55 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/20 19:32:40 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		WD_WIDTH = 800;
 int		WD_HEIGHT = 800;
-bool	DISPLAY = true;
+bool	DISPLAY = false;
 bool	PAUSE = false;
 
 int main (int argc, char **argv)
@@ -38,30 +38,30 @@ int main (int argc, char **argv)
 		float 			rotation = 0.0f;
 		float			mixFactor = 0.0f;
 		float			transitionSpeed = 1.0f;
-		float			lastFrame = 0.0f;
-		const float		targetFPS = 60.0f;
-		const float		targetFrameTime = 1.0f / targetFPS;
+		double			prevTime = 0.0;
+		double			crntTime = 0.0;
+		double			deltaTime;
+		unsigned  int	counter = 0;
 		unsigned int	skyboxVAO, skyboxVBO;
 		unsigned int	cubemapTexture;
-		
+
 		createSkybox(shaderSkybox, &skyboxVAO, &skyboxVBO, &cubemapTexture);
 
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
-			float	currentFrame = static_cast<float>(glfwGetTime());
-			float	deltaTime = currentFrame - lastFrame;
+			crntTime = glfwGetTime();
+			deltaTime = crntTime - prevTime;
+			counter++;
+			if (deltaTime >= 1.0 / 30.0) {
+				str FPS	= std::to_string((1.0 / deltaTime) * counter);
+				str	ms	= std::to_string((deltaTime / counter) * 1000);
 
-			if (deltaTime < targetFrameTime) {
-				float	waitTime = targetFrameTime - deltaTime;
-				std::this_thread::sleep_for(std::chrono::duration<float>(waitTime));
-				currentFrame = static_cast<float>(glfwGetTime());
-				deltaTime = currentFrame - lastFrame;
-
+				str	newTitle = "scop:" + data.getName() + " FPS:" + FPS + " ms:" + ms;
+				glfwSetWindowTitle(window, newTitle.c_str());
+				prevTime = crntTime;
+				counter = 0;
 			}
-			lastFrame = currentFrame;
-			
-			std::string title = "scop:" + data.getName() + " FPS " + std::to_string(1.0f / deltaTime);
-			glfwSetWindowTitle(window, title.c_str());
+
 			if (!PAUSE)
 				rotation += 1.0f * deltaTime;
 

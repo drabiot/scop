@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/20 18:47:31 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/20 19:18:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,10 @@ void	createSkybox(Shader shaderSkybox, unsigned int *skyboxVAO, unsigned int *sk
 	glUniform1i(glGetUniformLocation(shaderSkybox.ID, "skybox"), 0);
 
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
 
 	//Create Skybox
 	glGenVertexArrays(1, skyboxVAO);
