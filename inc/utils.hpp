@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/19 17:08:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:20:04 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,64 @@ str					lastWord(str content);
 std::vector<str>	split(str s, str delimiter);
 bool				isCorrectDigit(str value);
 str					trim(cref(str) s);
+
+static const float skyboxVertices[] = {
+    // Right face
+     1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,
+
+    // Left face
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+
+    // Top face
+    -1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f,  1.0f,
+
+    // Bottom face
+    -1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,
+
+    // Back face
+    -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
+
+    // Front face
+    -1.0f, -1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f
+};
+
+static const str facesCubemap[6] = {
+	"./resources/skybox/right.bmp",
+	"./resources/skybox/left.bmp",
+	"./resources/skybox/top.bmp",
+	"./resources/skybox/bottom.bmp",
+	"./resources/skybox/back.bmp",
+	"./resources/skybox/front.bmp"
+};
 
 #endif //UTILS_HPP

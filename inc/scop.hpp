@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/19 17:13:59 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:47:06 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ class	utils {
 
 void	initWindow(GLFWwindow **window);
 void	initGlad(void);
-void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, utils utils);
+void	createSkybox(Shader shaderSkybox, unsigned int *skyboxVAO, unsigned int *skyboxVBO, unsigned int *cubemapTexture);
+void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, Camera camera, utils utils, unsigned int skyboxVAO, unsigned int cubemapTexture);
 void	deleteUtils(GLFWwindow *window, Shader shaderProgram, utils utils);
 
 #endif //SCOP_HPP

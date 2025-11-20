@@ -6,11 +6,61 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/19 17:21:27 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:47:31 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.hpp"
+
+void    opengErrorMsg(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+{
+	(void)length;
+	(void)source;
+	(void)id;
+	(void)userParam;
+	std::string severityColor;
+	switch (severity){
+		case GL_DEBUG_SEVERITY_LOW:
+			severityColor = GREEN;
+			break;
+		case GL_DEBUG_SEVERITY_MEDIUM:
+			severityColor =  YELLOW;
+			break;
+		case GL_DEBUG_SEVERITY_HIGH:
+			severityColor =  RED;
+			break;
+		default:
+			return ; //these are notifications and not really important
+			severityColor =  WHITE;
+	}
+
+	PRINT RED "Opengl Message: " << severityColor;
+
+	switch (type) {
+		case GL_DEBUG_TYPE_ERROR:
+			PRINT "ERROR; ";
+			break;
+		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+			PRINT "DEPRECATED_BEHAVIOR; ";
+			break;
+		case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+			PRINT "UNDEFINED_BEHAVIOR; ";
+			break;
+		case GL_DEBUG_TYPE_PORTABILITY:
+			PRINT "PORTABILITY; ";
+			break;
+		case GL_DEBUG_TYPE_PERFORMANCE:
+			PRINT "PERFORMANCE; ";
+			break;
+		case GL_DEBUG_TYPE_OTHER:
+			PRINT "OTHER; ";
+			break;
+		default:
+			PRINT "NO TYPE; ";
+	}
+
+	PRINT message CENDL;
+}
 
 utils::utils(std::vector<GLfloat> vertices) : VBO1(vertices.data(), vertices.size() * sizeof(GLfloat)) {
 	// Links VBO to VAO
@@ -24,55 +74,6 @@ utils::utils(std::vector<GLfloat> vertices) : VBO1(vertices.data(), vertices.siz
 	//EBO1.Unbind();
 }
 
-void    opengErrorMsg(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
-{
-	(void)length;
-	(void)source;
-	(void)id;
-	(void)userParam;
-    std::string severityColor;
-    switch (severity){
-        case GL_DEBUG_SEVERITY_LOW:
-            severityColor = GREEN;
-            break;
-        case GL_DEBUG_SEVERITY_MEDIUM:
-            severityColor =  YELLOW;
-            break;
-        case GL_DEBUG_SEVERITY_HIGH:
-            severityColor =  RED;
-            break;
-        default:
-            return ; //these are notifications and not really important
-            severityColor =  WHITE;
-    }
-
-    PRINT RED "Opengl Message: " << severityColor;
-
-    switch (type) {
-        case GL_DEBUG_TYPE_ERROR:
-            PRINT "ERROR; ";
-            break;
-        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-            PRINT "DEPRECATED_BEHAVIOR; ";
-            break;
-        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-            PRINT "UNDEFINED_BEHAVIOR; ";
-            break;
-        case GL_DEBUG_TYPE_PORTABILITY:
-            PRINT "PORTABILITY; ";
-            break;
-        case GL_DEBUG_TYPE_PERFORMANCE:
-            PRINT "PERFORMANCE; ";
-            break;
-        case GL_DEBUG_TYPE_OTHER:
-            PRINT "OTHER; ";
-            break;
-        default:
-            PRINT "NO TYPE; ";
-    }
-
-    PRINT message CENDL;
-}
 
 void	initWindow(GLFWwindow **window) {
 	//Initialize GLFW
@@ -108,20 +109,98 @@ void	initGlad() {
 	glDebugMessageCallback(opengErrorMsg, 0);
 }
 
-void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, utils utils) {
-	// Tell OpenGL which Shader Program we want to use
+void	createSkybox(Shader shaderSkybox, unsigned int *skyboxVAO, unsigned int *skyboxVBO, unsigned int *cubemapTexture) {
+	shaderSkybox.Activate();
+	glUniform1i(glGetUniformLocation(shaderSkybox.ID, "skybox"), 0);
+
+	glEnable(GL_DEPTH_TEST);
+
+	//Create Skybox
+	glGenVertexArrays(1, skyboxVAO);
+	glGenBuffers(1, skyboxVBO);
+
+	glBindVertexArray(*skyboxVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, *skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), skyboxVertices, GL_STATIC_DRAW);
+
+	// Attribut de vertex
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	glGenTextures(1, cubemapTexture);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, *cubemapTexture);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	// Cycles through all the textures and attaches them to the cubemap object
+	for (unsigned int i = 0; i < 6; i++)
+	{
+		Texture face(facesCubemap[i].c_str());
+		if (face.data.empty()) {
+		ERROR RED AND "Failed to load cubemap texture: " << facesCubemap[i] CENDL;
+		}
+
+		glTexImage2D(
+		GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+		0,
+		GL_RGBA,
+		face.width,
+		face.height,
+		0,
+		GL_RGBA,
+		GL_UNSIGNED_BYTE,
+		face.data.data()
+		);
+		face.Delete();
+	}
+}
+
+void	drawSkybox(Shader shaderSkybox, Camera camera, unsigned int skyboxVAO, unsigned int cubemapTexture) {
+	shaderSkybox.Activate();
+	glDepthFunc(GL_LEQUAL);
+
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+	view = glm::mat4(glm::mat3(glm::lookAt(camera.Position, camera.Position + camera.Orientation, camera.Up)));
+	projection = glm::perspective(glm::radians(45.0f), (float)WD_WIDTH / WD_HEIGHT, 0.1f, 100.0f);
+	
+	glUniformMatrix4fv(glGetUniformLocation(shaderSkybox.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(glGetUniformLocation(shaderSkybox.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+	glBindVertexArray(skyboxVAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindVertexArray(0);
+		
+	glDepthFunc(GL_LESS);
+}
+
+void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, Camera camera, utils utils, unsigned int skyboxVAO, unsigned int cubemapTexture) {	
+	// Clean the back buffer and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	drawSkybox(shaderSkybox, camera, skyboxVAO, cubemapTexture);
+			
 	shaderProgram.Activate();
 
+	// Tell OpenGL which Shader Program we want to use
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, data.getArrayId());
-	glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex0"), 0);
+	glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex"), 0);
 
 	utils.VAO1.Bind();
 	glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
-	(void)shaderSkybox;
 }
 
 void	deleteUtils(GLFWwindow *window, Shader shaderProgram, utils utils) {
