@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 14:59:38 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/19 13:00:26 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/20 21:05:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class Camera {
 		glm::vec3	Position;
 		glm::vec3	Orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3	Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::mat4	cameraMatrix = glm::mat4(1.0f);
 
 		// Prevents the camera from jumping around when first clicking left click
 		bool	firstClick = true;
@@ -30,7 +31,8 @@ class Camera {
 
 		Camera(glm::vec3 position);
 
-		void	Matrix(float FOVdeg, float nearPlane, float farPlane, Shader &shader, const char *uniform);
+		void	updateMatrix(float FOVdeg, float nearPlane, float farPlane);
+		void	Matrix(Shader &shader, const char *uniform);
 		void	Inputs(GLFWwindow *window);
 };
 

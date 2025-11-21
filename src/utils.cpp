@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/20 19:18:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/20 21:26:14 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,10 +187,7 @@ void	drawSkybox(Shader shaderSkybox, Camera camera, unsigned int skyboxVAO, unsi
 	glDepthFunc(GL_LESS);
 }
 
-void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, Camera camera, utils utils, unsigned int skyboxVAO, unsigned int cubemapTexture) {	
-	// Clean the back buffer and depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, Camera camera, utils utils, unsigned int skyboxVAO, unsigned int cubemapTexture) {
 	drawSkybox(shaderSkybox, camera, skyboxVAO, cubemapTexture);
 			
 	shaderProgram.Activate();
