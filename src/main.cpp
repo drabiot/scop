@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/21 16:23:41 by tchartie         ###   ########.fr       */
+/*   Updated: 2025/11/25 18:02:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int main (int argc, char **argv)
 		glUniform4f(glGetUniformLocation(shaderLight.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 		shaderProgram.Activate();
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		//glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
@@ -115,6 +115,7 @@ int main (int argc, char **argv)
 			// Camera & Viewport
 			camera.Inputs(window);
 			camera.updateMatrix(45.0f, 0.1f, 1024.0f);
+			glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 			camera.Matrix(shaderProgram, "camMatrix");
 
 			glfwGetWindowSize(window, &WD_WIDTH, &WD_HEIGHT);

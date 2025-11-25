@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/11/20 19:23:21 by tchartie         ###   ########.fr        #
+#    Updated: 2025/11/21 16:42:45 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ INC_DIR			= 	./inc/ \
 					./glm/glm/ \
 					./glm/glm/gtc/
 
-CLASSE_H			=	Camera/ \
+CLASSE_H		=	Camera/ \
 					ChunkMaker/ \
 					FrameBuffer/ \
 					Texture/ \

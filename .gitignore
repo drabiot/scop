@@ -1,0 +1,6 @@
+GLFW
+glm
+inc/glad
+src/glad
+obj
+scop
