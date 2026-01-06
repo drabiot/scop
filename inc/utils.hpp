@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/21 16:15:38 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/06 18:05:29 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,69 +125,5 @@ static const str facesCubemap[6] = {
 	"./resources/skybox/back.bmp",
 	"./resources/skybox/front.bmp"
 };
-
-static GLfloat lightVertices[] = {
-    // Triangle 0,1,2
-    -0.1f,  0.1f, -0.1f,
-    -0.1f, -0.1f, -0.1f,
-     0.1f, -0.1f, -0.1f,
-
-    // Triangle 0,2,3
-    -0.1f,  0.1f, -0.1f,
-     0.1f, -0.1f, -0.1f,
-     0.1f,  0.1f, -0.1f,
-
-    // Triangle 0,4,7
-    -0.1f,  0.1f, -0.1f,
-    -0.1f,  0.1f,  0.1f,
-     0.1f,  0.1f,  0.1f,
-
-    // Triangle 0,7,3
-    -0.1f,  0.1f, -0.1f,
-     0.1f,  0.1f,  0.1f,
-     0.1f,  0.1f, -0.1f,
-
-    // Triangle 3,7,6
-     0.1f,  0.1f, -0.1f,
-     0.1f,  0.1f,  0.1f,
-     0.1f, -0.1f,  0.1f,
-
-    // Triangle 3,6,2
-     0.1f,  0.1f, -0.1f,
-     0.1f, -0.1f,  0.1f,
-     0.1f, -0.1f, -0.1f,
-
-    // Triangle 2,6,5
-     0.1f, -0.1f, -0.1f,
-     0.1f, -0.1f,  0.1f,
-    -0.1f, -0.1f,  0.1f,
-
-    // Triangle 2,5,1
-     0.1f, -0.1f, -0.1f,
-    -0.1f, -0.1f,  0.1f,
-    -0.1f, -0.1f, -0.1f,
-
-    // Triangle 1,5,4
-    -0.1f, -0.1f, -0.1f,
-    -0.1f, -0.1f,  0.1f,
-    -0.1f,  0.1f,  0.1f,
-
-    // Triangle 1,4,0
-    -0.1f, -0.1f, -0.1f,
-    -0.1f,  0.1f,  0.1f,
-    -0.1f,  0.1f, -0.1f,
-
-    // Triangle 4,5,6
-    -0.1f,  0.1f,  0.1f,
-    -0.1f, -0.1f,  0.1f,
-     0.1f, -0.1f,  0.1f,
-
-    // Triangle 4,6,7
-    -0.1f,  0.1f,  0.1f,
-     0.1f, -0.1f,  0.1f,
-     0.1f,  0.1f,  0.1f
-};
-
-
 
 #endif //UTILS_HPP
