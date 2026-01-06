@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/06 18:09:26 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/06 18:57:51 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int main (int argc, char **argv)
 		Shader	shaderProgram("./src/shaders/default.vert", "./src/shaders/default.frag");
 		Shader	shaderSkybox("./src/shaders/skybox.vert", "./src/shaders/skybox.frag");
 		Shader	shaderLight("./src/shaders/light.vert", "./src/shaders/light.frag");
+		Shader	shaderShadow("./src/shaders/shadow.vert", "./src/shaders/shadow.frag");
 		utils	utils(data.getVertices());
 		Camera	camera(glm::vec3(0.0f, 0.0f, 25.0f));
 
@@ -58,6 +59,38 @@ int main (int argc, char **argv)
 		shaderProgram.Activate();
 		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+
+		unsigned int	shadowMapFBO;
+		glGenFramebuffers(1, &shadowMapFBO);
+
+		unsigned int	shadowMapWidth = 2048, shadowMapHeight = 2048;
+		unsigned int	shadowMap;
+		glGenTextures(1, &shadowMap);
+		glBindTexture(GL_TEXTURE_2D, shadowMap);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		float	clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMap, 0);
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+		glm::mat4	orthogonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
+		glm::mat4	lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4	lightProjection = orthogonalProjection * lightView;
+
+
+		shaderShadow.Activate();
+		glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+
 
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
@@ -97,6 +130,19 @@ int main (int argc, char **argv)
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 			glUniform1f(glGetUniformLocation(shaderProgram.ID, "mixFactor"), easedMix);
 			
+
+			//Shadows experimental
+			glEnable(GL_DEPTH_TEST);
+
+			glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+			glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			
+
 			// Camera & Viewport
 			camera.Inputs(window);
 			camera.updateMatrix(45.0f, 0.1f, 1024.0f);
@@ -110,7 +156,6 @@ int main (int argc, char **argv)
 			camera.Matrix(shaderLight, "camMatrix");
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 			loopGame(data, window, shaderProgram, shaderSkybox, camera, utils, skyboxVAO, cubemapTexture);
-
 		}
 		deleteUtils(window, shaderProgram, utils);
 	} catch (const std::exception &e) {
