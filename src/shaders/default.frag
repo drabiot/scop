@@ -57,6 +57,5 @@ void main()
 
 	vec4 col = vec4(abs(color), 1.0);
     vec4 texture = texture(tex, texCoord);
-	//vec4 texture = texture(uShadow, texCoord.xy).xxxx;
     FragColor = (mix(col, texture, mixFactor) * ((diffuse * (1.0f - shadow)) + ambient + specular) * lightColor);
 }

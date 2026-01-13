@@ -24,6 +24,5 @@ void main()
 
     fragPosLight = lightProjection * vec4(vec3(model * vec4(aPos, 1.0f)), 1.0f);
 
-	//normal = aNormal;
 	normal = mat3(transpose(inverse(model))) * aNormal;
 }

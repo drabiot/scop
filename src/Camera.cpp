@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:06:19 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/13 14:10:36 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/13 17:15:05 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,18 @@ void	Camera::Inputs(GLFWwindow *window) {
 
 	//Handle Light Color
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && lightColor.x < 1)
-		this->lightColor.x += 0.05;
+		this->lightColor.x += 0.00390625;
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && lightColor.y < 1)
-		this->lightColor.y += 0.05;
+		this->lightColor.y += 0.00390625;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && lightColor.z < 1)
-		this->lightColor.z += 0.05;
+		this->lightColor.z += 0.00390625;
 
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && lightColor.x > 0)
-		this->lightColor.x -= 0.05;
+		this->lightColor.x -= 0.00390625;
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && lightColor.y > 0)
-		this->lightColor.y -= 0.05;
+		this->lightColor.y -= 0.00390625;
 	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && lightColor.z > 0)
-		this->lightColor.z -= 0.05;
+		this->lightColor.z -= 0.00390625;
 
 
 	// Handles mouse inputs
