@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/06 18:57:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/13 14:09:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,15 @@ int main (int argc, char **argv)
 
 		createSkybox(shaderSkybox, &skyboxVAO, &skyboxVBO, &cubemapTexture);
 
-		glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
 		glm::mat4 lightModel = glm::mat4(1.0f);
-		lightModel = glm::translate(lightModel, lightPos);
+		lightModel = glm::translate(lightModel, camera.lightPos);
 
 
 		shaderLight.Activate();
 		shaderProgram.Activate();
-		glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		int li = glGetUniformLocation(shaderProgram.ID, "lightColor");
+		glUniform4f(li, camera.lightColor.x, camera.lightColor.y, camera.lightColor.z, camera.lightColor.w);
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), camera.lightPos.x, camera.lightPos.y, camera.lightPos.z);
 
 
 		unsigned int	shadowMapFBO;
@@ -84,7 +83,7 @@ int main (int argc, char **argv)
 
 
 		glm::mat4	orthogonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
-		glm::mat4	lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4	lightView = glm::lookAt(20.0f * camera.lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4	lightProjection = orthogonalProjection * lightView;
 
 
@@ -131,18 +130,6 @@ int main (int argc, char **argv)
 			glUniform1f(glGetUniformLocation(shaderProgram.ID, "mixFactor"), easedMix);
 			
 
-			//Shadows experimental
-			glEnable(GL_DEPTH_TEST);
-
-			glViewport(0, 0, shadowMapWidth, shadowMapHeight);
-			glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
-			glClear(GL_DEPTH_BUFFER_BIT);
-
-			glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
-
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			
-
 			// Camera & Viewport
 			camera.Inputs(window);
 			camera.updateMatrix(45.0f, 0.1f, 1024.0f);
@@ -155,7 +142,23 @@ int main (int argc, char **argv)
 			shaderLight.Activate();
 			camera.Matrix(shaderLight, "camMatrix");
 			glDrawArrays(GL_TRIANGLES, 0, 36);
+			shaderProgram.Activate();
+			glUniform4f(li, camera.lightColor.x, camera.lightColor.y, camera.lightColor.z, camera.lightColor.w);
 			loopGame(data, window, shaderProgram, shaderSkybox, camera, utils, skyboxVAO, cubemapTexture);
+
+
+			//Shadows experimental
+			glEnable(GL_DEPTH_TEST);
+
+			glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+			glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			
+
 		}
 		deleteUtils(window, shaderProgram, utils);
 	} catch (const std::exception &e) {

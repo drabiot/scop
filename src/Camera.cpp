@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:06:19 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/20 21:15:56 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/13 14:10:36 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,22 @@ void	Camera::Inputs(GLFWwindow *window) {
 		speed = 0.4f;
 	else if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_RELEASE)
 		speed = 0.1f;
+
+	//Handle Light Color
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && lightColor.x < 1)
+		this->lightColor.x += 0.05;
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && lightColor.y < 1)
+		this->lightColor.y += 0.05;
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && lightColor.z < 1)
+		this->lightColor.z += 0.05;
+
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && lightColor.x > 0)
+		this->lightColor.x -= 0.05;
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && lightColor.y > 0)
+		this->lightColor.y -= 0.05;
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && lightColor.z > 0)
+		this->lightColor.z -= 0.05;
+
 
 	// Handles mouse inputs
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
