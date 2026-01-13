@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:36:35 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 13:25:02 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:50:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ Shader::Shader(const char *vertexFile, const char *fragmentFile) {
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	// Compile the Vertex Shader into machine code
 	glCompileShader(vertexShader);
+	compileErrors(vertexShader, "VERTEX");
 
 	// Create Fragment Shader Object and get its reference
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -49,6 +50,7 @@ Shader::Shader(const char *vertexFile, const char *fragmentFile) {
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 	// Compile the Vertex Shader into machine code
 	glCompileShader(fragmentShader);
+	compileErrors(fragmentShader, "FRAGMENT");
 
 	// Create Shader Program Object and get its reference
 	ID = glCreateProgram();
@@ -69,4 +71,28 @@ void	Shader::Activate() {
 
 void	Shader::Delete() {
 	glDeleteProgram(ID);
+}
+
+void Shader::compileErrors(unsigned int shader, const char *type)
+{
+    GLint    hasCompiled;
+    char    infoLog[1024];
+    if (std::strcmp(type, "PROGRAM"))
+    {
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
+        if (hasCompiled == GL_FALSE)
+        {
+            glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+            throw(std::runtime_error(RED "SHADER_COMPILATION_ERROR for:" + std::string(type) + "\n" + infoLog + BASE_COLOR));
+        }
+    }
+    else
+    {
+        glGetProgramiv(shader, GL_LINK_STATUS, &hasCompiled);
+        if (hasCompiled == GL_FALSE)
+        {
+            glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+            throw(std::runtime_error(RED "SHADER_LINKING_ERROR for:" + std::string(type) + "\n" + infoLog + BASE_COLOR));
+        }
+    }
 }

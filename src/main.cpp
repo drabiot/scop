@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/13 14:09:10 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:26:03 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,43 +87,58 @@ int main (int argc, char **argv)
 		glm::mat4	lightProjection = orthogonalProjection * lightView;
 
 
-		shaderShadow.Activate();
-		glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
-
-
+		
+		
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
 			// Clean the back buffer and depth buffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+			
+			
 			crntTime = glfwGetTime();
 			deltaTime = crntTime - prevTime;
 			counter++;
 			if (deltaTime >= 1.0 / 30.0) {
 				str FPS	= std::to_string((1.0 / deltaTime) * counter);
 				str	ms	= std::to_string((deltaTime / counter) * 1000);
-
+				
 				str	newTitle = "scop:" + data.getName() + " FPS:" + FPS + " ms:" + ms;
 				glfwSetWindowTitle(window, newTitle.c_str());
 				prevTime = crntTime;
 				counter = 0;
 			}
-
+			
 			if (!PAUSE)
-				rotation += 1.0f * deltaTime;
-
+			rotation += 1.0f * deltaTime;
+		
 			float	target = DISPLAY ? 1.0f : 0.0f;
 			
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::rotate(model, rotation, glm::vec3(0.0f, 1.0f, 0.0f));
+			
+			shaderShadow.Activate();
+			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			
+			//Shadows experimental
+			glEnable(GL_DEPTH_TEST);
+
+			glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+			glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 			//Fade Display
 			mixFactor += (target - mixFactor) * transitionSpeed * deltaTime;
-					
+		
 			if (mixFactor < 0.0f) mixFactor = 0.0f;
 			if (mixFactor > 1.0f) mixFactor = 1.0f;
 				
 			float easedMix = ease(mixFactor);
 
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::rotate(model, rotation, glm::vec3(0.0f, 1.0f, 0.0f));
 
 			shaderProgram.Activate();
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
@@ -144,21 +159,14 @@ int main (int argc, char **argv)
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 			shaderProgram.Activate();
 			glUniform4f(li, camera.lightColor.x, camera.lightColor.y, camera.lightColor.z, camera.lightColor.w);
+
+			glActiveTexture(GL_TEXTURE0 + 1);
+			glBindTexture(GL_TEXTURE_2D, shadowMap);
+			glUniform1i(glGetUniformLocation(shaderProgram.ID, "uShadow"), 1);
+			glUniform3fv(glGetUniformLocation(shaderProgram.ID, "lightPos"), 1, glm::value_ptr(camera.lightPos));
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+
 			loopGame(data, window, shaderProgram, shaderSkybox, camera, utils, skyboxVAO, cubemapTexture);
-
-
-			//Shadows experimental
-			glEnable(GL_DEPTH_TEST);
-
-			glViewport(0, 0, shadowMapWidth, shadowMapHeight);
-			glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
-			glClear(GL_DEPTH_BUFFER_BIT);
-
-			glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
-
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			
-
 		}
 		deleteUtils(window, shaderProgram, utils);
 	} catch (const std::exception &e) {

@@ -8,9 +8,11 @@ out vec3 texCoord;
 
 out vec3 normal;
 out vec3 crntPos;
+out vec4 fragPosLight;
 
 uniform mat4	camMatrix;
 uniform mat4	model;
+uniform mat4	lightProjection;
 
 void main()
 {
@@ -19,6 +21,8 @@ void main()
 	gl_Position = camMatrix * vec4(crntPos, 1.0);
 	color = aNormal;
 	texCoord = aTex;
+
+    fragPosLight = lightProjection * vec4(vec3(model * vec4(aPos, 1.0f)), 1.0f);
 
 	//normal = aNormal;
 	normal = mat3(transpose(inverse(model))) * aNormal;

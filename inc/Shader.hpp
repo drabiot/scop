@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:31:48 by tchartie          #+#    #+#             */
-/*   Updated: 2025/10/28 16:48:51 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:49:06 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class Shader {
 	public:
 		Shader(void);
 		Shader(const char *vertexFile, const char *fragmentFile);
+		void	compileErrors(unsigned int shader, const char *type);
 		
 		void	Activate(void);
 		void	Delete(void);
