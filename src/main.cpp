@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/13 16:26:03 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:09:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int main (int argc, char **argv)
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), camera.lightPos.x, camera.lightPos.y, camera.lightPos.z);
 
 
+		//Create FrameBuffer for the Shadow Map
 		unsigned int	shadowMapFBO;
 		glGenFramebuffers(1, &shadowMapFBO);
 
@@ -127,6 +128,7 @@ int main (int argc, char **argv)
 			glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
 			glClear(GL_DEPTH_BUFFER_BIT);
 
+			utils.VAO1.Bind();
 			glDrawArrays(GL_TRIANGLES, 0, data.getVertices().size());
 
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
