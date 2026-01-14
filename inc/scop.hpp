@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 13:50:35 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:56:26 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ class scop {
 		void					parseMtl(str fileDir, str fileSuffix);
 		void					makeTexArray(void);
 		void					addIndices(str newIndices);
-		vec3				parseIndices(str indice);
+		vec3					parseIndices(str indice);
 		void					normalizeVector(vec3 A, vec3 B, vec3 C);
-		vec2				generateDefaultUV(cref(vec3) pos, cref(vec3) normal);
+		vec2					generateDefaultUV(cref(vec3) pos, cref(vec3) normal);
 		void					computeBoundingBox(void);
 
 		str						getMaterialFilename(void);
@@ -49,7 +49,7 @@ class scop {
 		std::vector<GLfloat>	getVertices(void);
 		std::vector<GLuint>		getIndices(void);
 		int						getSmooth(void);
-		vec3				getCenter(void);
+		vec3					getCenter(void);
 		GLuint					getArrayId(void);
 
 		int						id = 0;
@@ -62,12 +62,12 @@ class scop {
 		std::vector<GLfloat>	_vertices;
 		std::vector<GLuint>		_indices;
 
-		vec3				_center;
+		vec3					_center;
 		bool					_centerDefine;
 		
-		std::vector<vec3>	_verticesPos;
-		std::vector<vec3>	_verticesNormal;
-		std::vector<vec2>	_verticesText;
+		std::vector<vec3>		_verticesPos;
+		std::vector<vec3>		_verticesNormal;
+		std::vector<vec2>		_verticesText;
 
 		std::vector<GLuint>		_indicesNormal;
 		std::vector<GLuint>		_indicesText;
