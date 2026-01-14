@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:51:30 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/19 13:46:08 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:17:11 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ void scop::parseMtl(str fileDir, str fileSuffix) {
         } else if (type == "Ka") {
             float r, g, b;
             std::istringstream(data) >> r >> g >> b;
-            current.ambientColor = glm::vec3(r, g, b);
+            current.ambientColor = vec3(r, g, b);
         } else if (type == "Kd") {
             float r, g, b;
             std::istringstream(data) >> r >> g >> b;
-            current.diffuseColor = glm::vec3(r, g, b);
+            current.diffuseColor = vec3(r, g, b);
         } else if (type == "Ks") {
             float r, g, b;
             std::istringstream(data) >> r >> g >> b;
-            current.specularColor = glm::vec3(r, g, b);
+            current.specularColor = vec3(r, g, b);
         } else if (type == "Ns") {
             double ns;
             std::istringstream(data) >> ns;
@@ -94,8 +94,8 @@ void	scop::makeTexArray() {
 
 	for (auto mtl : this->_usemtl) {
 		++layer;
-		width = glm::max(width, mtl.second.texture.width);
-		height = glm::max(height, mtl.second.texture.height);
+		width = max(width, mtl.second.texture.width);
+		height = max(height, mtl.second.texture.height);
 	}
 
 

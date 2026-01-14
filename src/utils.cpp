@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 13:07:01 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:17:27 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,13 +170,13 @@ void	drawSkybox(Shader shaderSkybox, Camera camera, unsigned int skyboxVAO, unsi
 	shaderSkybox.Activate();
 	glDepthFunc(GL_LEQUAL);
 
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
-	view = glm::mat4(glm::mat3(glm::lookAt(camera.Position, camera.Position + camera.Orientation, camera.Up)));
-	projection = glm::perspective(glm::radians(45.0f), (float)WD_WIDTH / WD_HEIGHT, 0.1f, 100.0f);
+	mat4 view = mat4(1.0f);
+	mat4 projection = mat4(1.0f);
+	view = mat4(mat3(lookAt(camera.Position, camera.Position + camera.Orientation, camera.Up)));
+	projection = perspective(radians(45.0f), (float)WD_WIDTH / WD_HEIGHT, 0.1f, 100.0f);
 	
-	glUniformMatrix4fv(glGetUniformLocation(shaderSkybox.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-	glUniformMatrix4fv(glGetUniformLocation(shaderSkybox.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(shaderSkybox.ID, "view"), 1, GL_FALSE, value_ptr(view));
+	glUniformMatrix4fv(glGetUniformLocation(shaderSkybox.ID, "projection"), 1, GL_FALSE, value_ptr(projection));
 
 	glBindVertexArray(skyboxVAO);
 	glActiveTexture(GL_TEXTURE0);

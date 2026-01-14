@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 13:41:01 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:17:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	scop::addVerticesPos(str newVertices) {
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
 	v3 = static_cast<GLfloat>(std::stod(values[2].c_str()));
 
-	glm::vec3	pos(v1, v2, v3);
+	vec3	pos(v1, v2, v3);
 
 	this->_verticesPos.push_back(pos);
 }
@@ -139,7 +139,7 @@ void	scop::addVerticesNormal(str newVertices) {
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
 	v3 = static_cast<GLfloat>(std::stod(values[2].c_str()));
 
-	glm::vec3	pos(v1, v2, v3);
+	vec3	pos(v1, v2, v3);
 
 	this->_verticesNormal.push_back(pos);
 }
@@ -161,7 +161,7 @@ void	scop::addVerticesText(str newVertices) {
 
 void	scop::addIndices(str newIndices) {
 	std::vector<str>	values = split(newIndices, " ");
-	glm::vec3			v1, v2, v3, v4;
+	vec3			v1, v2, v3, v4;
 	
 	if (values.size() == 3) {
 		
@@ -189,7 +189,7 @@ void	scop::addIndices(str newIndices) {
 		throw std::runtime_error("Not the right number of Indices");
 }
 
-glm::vec3	scop::parseIndices(str indice) {
+vec3	scop::parseIndices(str indice) {
 	if (!_centerDefine) {
 		computeBoundingBox();
 		_centerDefine = true;
@@ -206,7 +206,7 @@ glm::vec3	scop::parseIndices(str indice) {
 		GLuint	v = std::atoi(values[0].c_str()) - 1;
 		_indices.push_back(v);
 
-		glm::vec3	ret(v, -999, -999);
+		vec3	ret(v, -999, -999);
 		return (ret);
 	}
 
@@ -231,20 +231,20 @@ glm::vec3	scop::parseIndices(str indice) {
 		vn = std::atoi(values[2].c_str()) - 1;
 		_indicesNormal.push_back(vn);
 	}
-	glm::vec3	ret(v, vt, vn);
+	vec3	ret(v, vt, vn);
 	return (ret);
 }
 
 throw std::runtime_error("Invalid face indices format");
 }
 
-void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
-	glm::vec3 normal = glm::normalize(glm::cross(
+void scop::normalizeVector(vec3 A, vec3 B, vec3 C) {
+	vec3 normal = normalize(cross(
 		_verticesPos[B.x] - _verticesPos[A.x],
 		_verticesPos[C.x] - _verticesPos[A.x]
 	));
 
-	glm::vec3 positions[3] = {
+	vec3 positions[3] = {
 		_verticesPos[A.x],
 		_verticesPos[B.x],
 		_verticesPos[C.x]
@@ -256,12 +256,12 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		if (idx >= 0 && idx < (int)_verticesText.size())
 			uvs[i] = _verticesText[idx];
 		else {
-			glm::vec3 n = (idx >= 0 && idx < (int)_verticesNormal.size()) ? _verticesNormal[idx] : normal;
+			vec3 n = (idx >= 0 && idx < (int)_verticesNormal.size()) ? _verticesNormal[idx] : normal;
 			uvs[i] = generateDefaultUV(positions[i], n);
 		}
 	}
 
-	glm::vec3 normals[3];
+	vec3 normals[3];
 	for (int i = 0; i < 3; ++i) {
 		int idx = (i == 0 ? A.z : (i == 1 ? B.z : C.z));
 		if (idx >= 0 && idx < (int)_verticesNormal.size())
@@ -288,8 +288,8 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 	}
 }
 
-vec2	scop::generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal) {
-	glm::vec3 absN = glm::abs(normal);
+vec2	scop::generateDefaultUV(cref(vec3) pos, cref(vec3) normal) {
+	vec3 absN = abs(normal);
 	vec2 uv;
 
 	if (absN.x >= absN.y && absN.x >= absN.z)
@@ -305,7 +305,7 @@ vec2	scop::generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal) {
 
 void	scop::computeBoundingBox() {
 	if (_verticesPos.empty()) {
-		_center = glm::vec3(0.0f);
+		_center = vec3(0.0f);
 		return;
 	}
 
@@ -314,7 +314,7 @@ void	scop::computeBoundingBox() {
 	float minZ = _verticesPos[0].z, maxZ = _verticesPos[0].z;
 
 	for (size_t i = 0; i < _verticesPos.size(); ++i) {
-		const glm::vec3 &v = _verticesPos[i];
+		const vec3 &v = _verticesPos[i];
 		if (v.x < minX) minX = v.x;
 		if (v.x > maxX) maxX = v.x;
 		if (v.y < minY) minY = v.y;
@@ -323,7 +323,7 @@ void	scop::computeBoundingBox() {
 		if (v.z > maxZ) maxZ = v.z;
 	}
 
-	_center = glm::vec3(
+	_center = vec3(
 		(minX + maxX) / 2.0f,
 		(minY + maxY) / 2.0f,
 		(minZ + maxZ) / 2.0f
@@ -350,7 +350,7 @@ int			scop::getSmooth() {
 	return (this->_smooth);
 }
 
-glm::vec3	scop::getCenter() {
+vec3	scop::getCenter() {
 	return (this->_center);
 }
 

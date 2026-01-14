@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 13:09:20 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:17:06 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int main (int argc, char **argv)
 		Shader	shaderLight("./src/shaders/light.vert", "./src/shaders/light.frag");
 		Shader	shaderShadow("./src/shaders/shadow.vert", "./src/shaders/shadow.frag");
 		utils	utils(data.getVertices());
-		Camera	camera(glm::vec3(0.0f, 0.0f, 25.0f));
+		Camera	camera(vec3(0.0f, 0.0f, 25.0f));
 
 		float 			rotation = 0.0f;
 		float			mixFactor = 0.0f;
@@ -49,8 +49,8 @@ int main (int argc, char **argv)
 
 		createSkybox(shaderSkybox, &skyboxVAO, &skyboxVBO, &cubemapTexture);
 
-		glm::mat4 lightModel = glm::mat4(1.0f);
-		lightModel = glm::translate(lightModel, camera.lightPos);
+		mat4 lightModel = mat4(1.0f);
+		lightModel = translate(lightModel, camera.lightPos);
 
 
 		shaderLight.Activate();
@@ -83,9 +83,9 @@ int main (int argc, char **argv)
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
-		glm::mat4	orthogonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
-		glm::mat4	lightView = glm::lookAt(20.0f * camera.lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4	lightProjection = orthogonalProjection * lightView;
+		mat4	orthogonalProjection = ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
+		mat4	lightView = lookAt(20.0f * camera.lightPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+		mat4	lightProjection = orthogonalProjection * lightView;
 
 
 		
@@ -114,12 +114,12 @@ int main (int argc, char **argv)
 		
 			float	target = DISPLAY ? 1.0f : 0.0f;
 			
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::rotate(model, rotation, glm::vec3(0.0f, 1.0f, 0.0f));
+			mat4 model = mat4(1.0f);
+			model = rotate(model, rotation, vec3(0.0f, 1.0f, 0.0f));
 			
 			shaderShadow.Activate();
-			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
-			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "lightProjection"), 1, GL_FALSE, value_ptr(lightProjection));
+			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "model"), 1, GL_FALSE, value_ptr(model));
 			
 			//Shadows experimental
 			glEnable(GL_DEPTH_TEST);
@@ -143,7 +143,7 @@ int main (int argc, char **argv)
 
 
 			shaderProgram.Activate();
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, value_ptr(model));
 			glUniform1f(glGetUniformLocation(shaderProgram.ID, "mixFactor"), easedMix);
 			
 
@@ -165,8 +165,8 @@ int main (int argc, char **argv)
 			glActiveTexture(GL_TEXTURE0 + 1);
 			glBindTexture(GL_TEXTURE_2D, shadowMap);
 			glUniform1i(glGetUniformLocation(shaderProgram.ID, "uShadow"), 1);
-			glUniform3fv(glGetUniformLocation(shaderProgram.ID, "lightPos"), 1, glm::value_ptr(camera.lightPos));
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+			glUniform3fv(glGetUniformLocation(shaderProgram.ID, "lightPos"), 1, value_ptr(camera.lightPos));
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "lightProjection"), 1, GL_FALSE, value_ptr(lightProjection));
 
 			loopGame(data, window, shaderProgram, shaderSkybox, camera, utils, skyboxVAO, cubemapTexture);
 		}

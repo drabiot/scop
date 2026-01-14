@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 13:32:32 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:46:04 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,13 @@
 # include <chrono>
 # include <sstream>
 # include <algorithm> 
+# include <cstring>
 
 # include "glad.h"
 # include "glfw3.h"
 # include "ft_glm.hpp"
 
-# include "color.hpp"
-
-//TO DELETE
-# define GLM_ENABLE_EXPERIMENTAL
-# include "gtc/matrix_transform.hpp"
-# include "gtc/type_ptr.hpp"
-# include "glm.hpp"
-# include "gtc/type_ptr.hpp"
-# include "gtx/rotate_vector.hpp"
-# include "gtx/vector_angle.hpp"
+# include "color.hpp"	
 
 # define AND	<<
 # define PRINT	std::cout AND

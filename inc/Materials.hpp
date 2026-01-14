@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:52:39 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/18 18:52:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:50:21 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ class Material {
 
 		int			id;
 		str			name;
-		glm::vec3	ambientColor;
-		glm::vec3	diffuseColor;
-		glm::vec3	specularColor;
+		vec3	ambientColor;
+		vec3	diffuseColor;
+		vec3	specularColor;
 		double		dissolve;				//Transparency
 		int			illum;					//Type of illumination
 		double		specularExponant;		//Shininess

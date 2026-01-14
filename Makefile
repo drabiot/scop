@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2026/01/14 13:38:28 by tchartie         ###   ########.fr        #
+#    Updated: 2026/01/14 14:44:06 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,7 @@ CC 				= 	c++
 INC_DIR			= 	./inc/ \
 					./GLFW/include/GLFW/ \
 					./inc/glad/. \
-					./src/ \
-					./glm/glm/ \
-					./glm/glm/gtc/
+					./src/
 
 CLASSE_H		=	Camera/ \
 					ChunkMaker/ \
@@ -82,7 +80,7 @@ OBJ_DIR 		=	obj/
 OBJ_NAME		=	$(SRC_NAME:.cpp=.o)
 OBJ				=	$(patsubst %, $(OBJ_DIR)%, $(OBJ_NAME))
 
-all:		glfw glad glm $(NAME)
+all:		glfw glad $(NAME)
 
 glfw:
 	@if ls | grep -q "GLFW"; then \
@@ -118,15 +116,6 @@ glad:
 		rm -rf glad; \
 	fi
 
-glm:
-	@if ls | grep -q "glm"; then \
-		echo "$(RED)GLM Found $(BASE_COLOR)"; \
-	else \
-		echo "$(RED)GLM Not Found $(BASE_COLOR)"; \
-		echo "$(RED)Cloning GLM from github $(BASE_COLOR)"; \
-		git clone https://github.com/g-truc/glm.git glm; \
-	fi
-
 $(NAME):	$(OBJ)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(GLFWARCHIVE) $(LDFLAGS)
 	@echo "$(GREEN)scop successfully compiled! $(BASE_COLOR)"
@@ -153,4 +142,4 @@ dclean: fclean
 
 re: 		fclean all
 
-.PHONY :	all glwf glad glm clean fclean dclean re
+.PHONY :	all glwf glad clean fclean dclean re
