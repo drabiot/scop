@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 14:37:49 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/06 18:05:29 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:32:32 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # include "glad.h"
 # include "glfw3.h"
+# include "ft_glm.hpp"
 
 # include "color.hpp"
 

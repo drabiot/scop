@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2025/11/25 17:43:57 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:41:01 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void	scop::addVerticesText(str newVertices) {
 	v1 = static_cast<GLfloat>(std::stod(values[0].c_str()));
 	v2 = static_cast<GLfloat>(std::stod(values[1].c_str()));
 
-	glm::vec2	pos(v1, v2);
+	vec2	pos(v1, v2);
 
 	this->_verticesText.push_back(pos);
 }
@@ -250,7 +250,7 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 		_verticesPos[C.x]
 	};
 
-	glm::vec2 uvs[3];
+	vec2 uvs[3];
 	for (int i = 0; i < 3; ++i) {
 		int idx = (i == 0 ? A.y : (i == 1 ? B.y : C.y));
 		if (idx >= 0 && idx < (int)_verticesText.size())
@@ -288,18 +288,18 @@ void scop::normalizeVector(glm::vec3 A, glm::vec3 B, glm::vec3 C) {
 	}
 }
 
-glm::vec2	scop::generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal) {
+vec2	scop::generateDefaultUV(cref(glm::vec3) pos, cref(glm::vec3) normal) {
 	glm::vec3 absN = glm::abs(normal);
-	glm::vec2 uv;
+	vec2 uv;
 
 	if (absN.x >= absN.y && absN.x >= absN.z)
-		uv = glm::vec2(pos.z, pos.y);
+		uv = vec2(pos.z, pos.y);
 	else if (absN.y >= absN.x && absN.y >= absN.z)
-		uv = glm::vec2(pos.x, pos.z);
+		uv = vec2(pos.x, pos.z);
    else
-		uv = glm::vec2(pos.x, pos.y);
+		uv = vec2(pos.x, pos.y);
 
-	uv = (uv - glm::vec2(0.0f));
+	uv = (uv - vec2(0.0f));
 	return (uv);
 }
 

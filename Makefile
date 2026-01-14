@@ -6,7 +6,7 @@
 #    By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 09:58:53 by tchartie          #+#    #+#              #
-#    Updated: 2025/11/21 16:42:45 by tchartie         ###   ########.fr        #
+#    Updated: 2026/01/14 13:38:28 by tchartie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,8 @@ SRC_NAME 		=	main.cpp \
 					VBO.cpp \
 					Texture.cpp \
 					Camera.cpp \
-					Materials.cpp
+					Materials.cpp \
+					ft_glm.cpp
 
 OBJ_DIR 		=	obj/
 OBJ_NAME		=	$(SRC_NAME:.cpp=.o)
