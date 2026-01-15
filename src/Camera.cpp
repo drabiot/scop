@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:06:19 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/15 18:31:42 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:17:41 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ void	Camera::Matrix(Shader &shader, const char *uniform) {
 }
 
 void	Camera::Inputs(GLFWwindow *window) {
-	// Handles Display inputs
+	//Handles Display inputs
 	static bool	displayKey = false;
 	static bool	pauseKey = false;
 	static bool	greyKey = false;
 
+	//Utility key input
 	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && !displayKey) {
 		DISPLAY = !DISPLAY;
 		displayKey = true;
@@ -57,8 +58,23 @@ void	Camera::Inputs(GLFWwindow *window) {
 	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_RELEASE && greyKey)
 		greyKey = false;
 
+	//Handle key inputs for model
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS &&
+			(glfwGetKey(window, GLFW_KEY_R) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_B) != GLFW_PRESS))
+		PRINT MAGENTA "IN FRONT" CENDL;
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS &&
+			(glfwGetKey(window, GLFW_KEY_R) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_B) != GLFW_PRESS))
+		PRINT MAGENTA "BEHIND" CENDL;
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		PRINT MAGENTA "LEFT" CENDL;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		PRINT MAGENTA "RIGHT" CENDL;
+	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
+		PRINT MAGENTA "UP" CENDL;
+	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
+		PRINT MAGENTA "DOWN" CENDL;
 
-	// Handles key inputs
+	//Handles key inputs for cam
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		Position += speed * Orientation;
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
@@ -92,48 +108,48 @@ void	Camera::Inputs(GLFWwindow *window) {
 		this->lightColor.z -= 0.00390625;
 
 
-	// Handles mouse inputs
+	//Handles mouse inputs
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
-		// Hides mouse cursor
+		//Hides mouse cursor
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-		// Prevents camera from jumping on the first click
+		//Prevents camera from jumping on the first click
 		if (firstClick)
 		{
 			glfwSetCursorPos(window, (WD_WIDTH / 2), (WD_HEIGHT / 2));
 			firstClick = false;
 		}
 
-		// Stores the coordinates of the cursor
+		//Stores the coordinates of the cursor
 		double mouseX;
 		double mouseY;
-		// Fetches the coordinates of the cursor
+		//Fetches the coordinates of the cursor
 		glfwGetCursorPos(window, &mouseX, &mouseY);
 
-		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-		// and then "transforms" them into degrees 
+		//Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
+		//and then "transforms" them into degrees 
 		float rotX = sensi * (float)(mouseY - (WD_HEIGHT / 2)) / WD_HEIGHT;
 		float rotY = sensi * (float)(mouseX - (WD_WIDTH / 2)) / WD_WIDTH;
 
-		// Calculates upcoming vertical change in the Orientation
+		//Calculates upcoming vertical change in the Orientation
 		vec3 newOrientation = rotate(Orientation, radians(-rotX), normalize(cross(Orientation, Up)));
 
-		// Decides whether or not the next vertical Orientation is legal or not
+		//Decides whether or not the next vertical Orientation is legal or not
 		if (abs(angle(newOrientation, Up) - radians(90.0f)) <= radians(85.0f))
 			Orientation = newOrientation;
 
-		// Rotates the Orientation left and right
+		//Rotates the Orientation left and right
 		Orientation = rotate(Orientation, radians(-rotY), Up);
 
-		// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
+		//Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
 		glfwSetCursorPos(window, (WD_WIDTH / 2), (WD_HEIGHT / 2));
 	}
 	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
 	{
-		// Unhides cursor since camera is not looking around anymore
+		//Unhides cursor since camera is not looking around anymore
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		// Makes sure the next time the camera looks around it doesn't jump
+		//Makes sure the next time the camera looks around it doesn't jump
 		firstClick = true;
 	}
 }
