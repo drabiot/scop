@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 14:17:06 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:45:09 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int		WD_WIDTH = 800;
 int		WD_HEIGHT = 800;
 bool	DISPLAY = false;
 bool	PAUSE = false;
+bool	GREYKEY = true;
 
 int main (int argc, char **argv)
 {
@@ -43,7 +44,7 @@ int main (int argc, char **argv)
 		double			prevTime = 0.0;
 		double			crntTime = 0.0;
 		double			deltaTime;
-		unsigned  int	counter = 0;
+		unsigned int	counter = 0;
 		unsigned int	skyboxVAO, skyboxVBO;
 		unsigned int	cubemapTexture;
 
@@ -86,9 +87,6 @@ int main (int argc, char **argv)
 		mat4	orthogonalProjection = ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
 		mat4	lightView = lookAt(20.0f * camera.lightPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 		mat4	lightProjection = orthogonalProjection * lightView;
-
-
-		
 		
 		//Main Game loop
 		while(!glfwWindowShouldClose(window)) {
@@ -167,6 +165,8 @@ int main (int argc, char **argv)
 			glUniform1i(glGetUniformLocation(shaderProgram.ID, "uShadow"), 1);
 			glUniform3fv(glGetUniformLocation(shaderProgram.ID, "lightPos"), 1, value_ptr(camera.lightPos));
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "lightProjection"), 1, GL_FALSE, value_ptr(lightProjection));
+			glUniform1i(glGetUniformLocation(shaderProgram.ID, "greyKey"), GREYKEY);
+			glUniform1i(glGetUniformLocation(shaderProgram.ID, "indice"), (int)(data.getIndices().size()));
 
 			loopGame(data, window, shaderProgram, shaderSkybox, camera, utils, skyboxVAO, cubemapTexture);
 		}

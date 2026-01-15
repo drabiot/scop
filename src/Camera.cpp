@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:06:19 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 14:17:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:31:42 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	Camera::Inputs(GLFWwindow *window) {
 	// Handles Display inputs
 	static bool	displayKey = false;
 	static bool	pauseKey = false;
+	static bool	greyKey = false;
 
 	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && !displayKey) {
 		DISPLAY = !DISPLAY;
@@ -48,6 +49,13 @@ void	Camera::Inputs(GLFWwindow *window) {
 	}
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && pauseKey)
 		pauseKey = false;
+
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS && !greyKey) {
+		GREYKEY = !GREYKEY;
+		greyKey = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_RELEASE && greyKey)
+		greyKey = false;
 
 
 	// Handles key inputs

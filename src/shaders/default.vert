@@ -13,13 +13,20 @@ out vec4 fragPosLight;
 uniform mat4	camMatrix;
 uniform mat4	model;
 uniform mat4	lightProjection;
+uniform	bool	greyKey;
+uniform int		indice;
 
 void main()
 {
 	crntPos = vec3(model * vec4(aPos, 1.0f));
 
 	gl_Position = camMatrix * vec4(crntPos, 1.0);
-	color = aNormal;
+
+	if (!greyKey)
+		color = aNormal;
+	else
+		color = vec3(float(gl_VertexID) / float(indice));
+
 	texCoord = aTex;
 
     fragPosLight = lightProjection * vec4(vec3(model * vec4(aPos, 1.0f)), 1.0f);
