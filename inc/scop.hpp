@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 14:56:26 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:46:06 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ class scop {
 		int						getSmooth(void);
 		vec3					getCenter(void);
 		GLuint					getArrayId(void);
+
+		mat4					moveModel(GLFWwindow *window, mat4 move); 
 
 		int						id = 0;
 		

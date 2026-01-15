@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:54:45 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 14:56:01 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:38:34 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ const float*	value_ptr(const mat4& m);
 const float*	value_ptr(const vec3& v);
 
 mat4	translate(const mat4& m, const vec3& v);
+mat4	translate(const vec3& v);
 vec3	rotate(const vec3& v, float angle, const vec3& axis);
 mat4	rotate(float angle, const vec3& axis);
 mat4	rotate(const mat4& m, float angle, const vec3& axis);

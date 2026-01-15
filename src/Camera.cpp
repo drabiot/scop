@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:06:19 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/15 19:17:41 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:41:34 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,6 @@ void	Camera::Inputs(GLFWwindow *window) {
 	}
 	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_RELEASE && greyKey)
 		greyKey = false;
-
-	//Handle key inputs for model
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS &&
-			(glfwGetKey(window, GLFW_KEY_R) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_B) != GLFW_PRESS))
-		PRINT MAGENTA "IN FRONT" CENDL;
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS &&
-			(glfwGetKey(window, GLFW_KEY_R) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_B) != GLFW_PRESS))
-		PRINT MAGENTA "BEHIND" CENDL;
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		PRINT MAGENTA "LEFT" CENDL;
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		PRINT MAGENTA "RIGHT" CENDL;
-	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
-		PRINT MAGENTA "UP" CENDL;
-	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
-		PRINT MAGENTA "DOWN" CENDL;
 
 	//Handles key inputs for cam
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

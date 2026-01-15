@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/15 18:45:09 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:46:20 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,14 @@ int main (int argc, char **argv)
 			if (mixFactor > 1.0f) mixFactor = 1.0f;
 				
 			float easedMix = ease(mixFactor);
+			static mat4 move;
 
+
+			move = data.moveModel(window, move);
 
 			shaderProgram.Activate();
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, value_ptr(model));
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, value_ptr(model * move));
 			glUniform1f(glGetUniformLocation(shaderProgram.ID, "mixFactor"), easedMix);
-			
 
 			// Camera & Viewport
 			camera.Inputs(window);

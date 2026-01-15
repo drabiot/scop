@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 13:36:58 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 14:57:40 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:38:24 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ const float*	value_ptr(const mat4& m){return &m.c0.x;}
 const float*	value_ptr(const vec3& v){return &v.x;}
 
 mat4	translate(const mat4& m, const vec3& v){mat4 r=m;r.c3.x+=v.x;r.c3.y+=v.y;r.c3.z+=v.z;return r;}
+mat4	translate(const vec3& v){mat4 r(1);r.c3.x+=v.x;r.c3.y+=v.y;r.c3.z+=v.z;return r;}
 
 vec3	rotate(const vec3& v, float angle, const vec3& axis){
     vec3 a=normalize(axis); float c=cos(angle), s=sin(angle), t=1-c;
