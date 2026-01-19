@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:26:14 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/14 14:17:27 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/19 21:05:10 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,20 +147,20 @@ void	createSkybox(Shader shaderSkybox, unsigned int *skyboxVAO, unsigned int *sk
 	for (unsigned int i = 0; i < 6; i++)
 	{
 		Texture face(facesCubemap[i].c_str());
-		if (face.data.empty()) {
-		ERROR RED AND "Failed to load cubemap texture: " << facesCubemap[i] CENDL;
-		}
+		
+		if (face.data.empty())
+			ERROR RED AND "Failed to load cubemap texture: " << facesCubemap[i] CENDL;
 
 		glTexImage2D(
-		GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-		0,
-		GL_RGBA,
-		face.width,
-		face.height,
-		0,
-		GL_RGBA,
-		GL_UNSIGNED_BYTE,
-		face.data.data()
+			GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+			0,
+			GL_RGBA,
+			face.width,
+			face.height,
+			0,
+			GL_RGBA,
+			GL_UNSIGNED_BYTE,
+			face.data.data()
 		);
 		face.Delete();
 	}
@@ -204,12 +204,19 @@ void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shader
 	glfwPollEvents();
 }
 
-void	deleteUtils(GLFWwindow *window, Shader shaderProgram, utils utils) {
+void	deleteUtils(GLFWwindow *window, scop data, Shader shaderProgram, Shader shaderSkybox, Shader shaderLight, Shader shaderShadow, utils utils) {
 	// Delete all the objects we've created
 	utils.VAO1.Delete();
 	utils.VBO1.Delete();
 
 	shaderProgram.Delete();
+	shaderSkybox.Delete();
+	shaderLight.Delete();
+	shaderShadow.Delete();
+
+	for (auto i : data.getUsemtl()) {
+		i.second.texture.Delete();
+	}
 
 	//Delete window to avoid leaks
 	glfwDestroyWindow(window);

@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/19 20:31:48 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/19 21:48:07 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ scop::scop(char *filename) {
 		this->_usemtl.insert({"", current});
 		makeTexArray();
 	}
+
+	if (this->_vertices.empty())
+		throw std::runtime_error(str("Can't Draw blank model"));
 
 	file.close();
 }
@@ -163,6 +166,11 @@ void	scop::addIndices(str newIndices) {
 	std::vector<str>	values = split(newIndices, " ");
 	vec3			v1, v2, v3, v4;
 	
+	if (std::atoi(values[0].c_str()) > (int)this->_verticesPos.size()
+			|| std::atoi(values[1].c_str()) > (int)this->_verticesPos.size()
+			|| std::atoi(values[2].c_str()) > (int)this->_verticesPos.size())
+		throw std::runtime_error("Wrong Indice number");
+	
 	if (values.size() == 3) {
 		
 		v1 = parseIndices(values[0]);
@@ -172,6 +180,8 @@ void	scop::addIndices(str newIndices) {
 		normalizeVector(v1, v2, v3);
 	}
 	else if (values.size() == 4) {
+		if (std::atoi(values[3].c_str()) > (int)this->_verticesPos.size())
+			throw std::runtime_error("Wrong Indice number");
 		
 		v1 = parseIndices(values[0]);
 		v2 = parseIndices(values[1]);
@@ -358,11 +368,11 @@ GLuint	scop::getArrayId() {
 	return (this->_arrayId);
 }
 
-mat4	scop::moveModel(GLFWwindow *window, mat4 move) {
-	//Handle key inputs for model
-	//INCREMENT value of the TRANSLATE
-	//TRANSLATE -> ROTATE -> TRANSLATE
+std::map<str, Material>	scop::getUsemtl(void) {
+	return (this->_usemtl);
+}
 
+mat4	scop::moveModel(GLFWwindow *window, mat4 move) {
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS &&
 			(glfwGetKey(window, GLFW_KEY_R) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_B) != GLFW_PRESS))
 		this->_posZ -= 0.1f;

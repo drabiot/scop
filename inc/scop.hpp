@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/19 20:19:00 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/19 21:01:15 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class scop {
 		int						getSmooth(void);
 		vec3					getCenter(void);
 		GLuint					getArrayId(void);
+		std::map<str, Material>	getUsemtl(void);
 
 		mat4					moveModel(GLFWwindow *window, mat4 move); 
 
@@ -94,6 +95,6 @@ void	initWindow(GLFWwindow **window);
 void	initGlad(void);
 void	createSkybox(Shader shaderSkybox, unsigned int *skyboxVAO, unsigned int *skyboxVBO, unsigned int *cubemapTexture);
 void	loopGame(scop data, GLFWwindow *window, Shader shaderProgram, Shader shaderSkybox, Camera camera, utils utils, unsigned int skyboxVAO, unsigned int cubemapTexture);
-void	deleteUtils(GLFWwindow *window, Shader shaderProgram, utils utils);
+void	deleteUtils(GLFWwindow *window, scop data, Shader shaderProgram, Shader shaderSkybox, Shader shaderLight, Shader shaderShadow, utils utils);
 
 #endif //SCOP_HPP
