@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/15 19:46:20 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:29:47 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,12 @@ int main (int argc, char **argv)
 		
 			float	target = DISPLAY ? 1.0f : 0.0f;
 			
-			mat4 model = mat4(1.0f);
-			model = rotate(model, rotation, vec3(0.0f, 1.0f, 0.0f));
+			static mat4 move;
+			move = data.moveModel(window, move);
 			
+			mat4 model = mat4(1.0f);
+			model = rotate(move, rotation, vec3(0.0f, 1.0f, 0.0f));
+
 			shaderShadow.Activate();
 			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "lightProjection"), 1, GL_FALSE, value_ptr(lightProjection));
 			glUniformMatrix4fv(glGetUniformLocation(shaderShadow.ID, "model"), 1, GL_FALSE, value_ptr(model));
@@ -138,13 +141,9 @@ int main (int argc, char **argv)
 			if (mixFactor > 1.0f) mixFactor = 1.0f;
 				
 			float easedMix = ease(mixFactor);
-			static mat4 move;
-
-
-			move = data.moveModel(window, move);
 
 			shaderProgram.Activate();
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, value_ptr(model * move));
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, value_ptr(model));
 			glUniform1f(glGetUniformLocation(shaderProgram.ID, "mixFactor"), easedMix);
 
 			// Camera & Viewport

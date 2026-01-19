@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:02:27 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/15 19:49:09 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:31:48 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,18 +365,20 @@ mat4	scop::moveModel(GLFWwindow *window, mat4 move) {
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS &&
 			(glfwGetKey(window, GLFW_KEY_R) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_B) != GLFW_PRESS))
-		move = translate(vec3(0.0f, 0.0f, 1.0f));
+		this->_posZ -= 0.1f;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS &&
 			(glfwGetKey(window, GLFW_KEY_R) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_G) != GLFW_PRESS && glfwGetKey(window, GLFW_KEY_B) != GLFW_PRESS))
-		move = translate(vec3(0.0f, 0.0f, -1.0f));
+		this->_posZ += 0.1f;
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		move = translate(vec3(1.0f, 0.0f, 0.0f));
+		this->_posX -= 0.1f;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		move = translate(vec3(-1.0f, 0.0f, 0.0f));
+		this->_posX += 0.1f;
 	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
-		move = translate(vec3(0.0f, 1.0f, 0.0f));
+		this->_posY += 0.1f;
 	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
-		move = translate(vec3(0.0f, -1.0f, 0.0f));
+		this->_posY -= 0.1f;
+
+	move = translate(vec3(this->_posX, this->_posY, this->_posZ));
 
 	return (move);
 }

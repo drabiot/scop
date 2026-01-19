@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:49 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/15 19:46:06 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:19:00 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ class scop {
 		std::vector<GLuint>		_indicesText;
 
 		GLuint					_arrayId = 0;
+
+		float					_posX = 0.0f;
+		float					_posY = 0.0f;
+		float					_posZ = 0.0f;
 
 };
 
