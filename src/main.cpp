@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 10:00:40 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/19 21:03:45 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:31:45 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ int main (int argc, char **argv)
 		ERROR RED ".obj file needed" CENDL;
 		return (1);
 	}
+
+	GLFWwindow *window;
+	
 	try {
-		GLFWwindow *window;
 		initWindow(&window);
 		initGlad();
 		scop data(argv[1]);
@@ -173,6 +175,10 @@ int main (int argc, char **argv)
 		}
 		deleteUtils(window, data, shaderProgram, shaderSkybox, shaderLight, shaderShadow, utils);
 	} catch (const std::exception &e) {
+		//Delete window to avoid leaks
+		glfwDestroyWindow(window);
+		glfwTerminate();
+		
 		ERROR RED "Error: " AND e.what() CENDL;
 	}
 	return (0);

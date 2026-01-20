@@ -6,7 +6,7 @@
 /*   By: tchartie <tchartie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 19:51:30 by tchartie          #+#    #+#             */
-/*   Updated: 2026/01/19 21:25:22 by tchartie         ###   ########.fr       */
+/*   Updated: 2026/01/20 16:31:11 by tchartie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@ void	scop::makeTexArray() {
 		width = max(width, mtl.second.texture.width);
 		height = max(height, mtl.second.texture.height);
 	}
+
+	if (layer == 0)
+		throw std::runtime_error("Too few layers");
 
 
 	glGenTextures(1, &_arrayId);
