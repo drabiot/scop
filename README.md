@@ -1,5 +1,5 @@
 
-# Scop
+# 🎥 Scop
 
 
 Scop is a Graphic & Gaming specialty project of 42 that is a basic GPU rendering with OpenGL.
