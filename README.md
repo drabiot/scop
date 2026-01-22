@@ -1,6 +1,10 @@
+<div align="center">
+  # 🎥 Scop
+</div>div
 
-# 🎥 Scop
+<img width="200" height="170" alt="Screenshot from 2026-01-22 17-50-47" src="https://github.com/user-attachments/assets/cb338c1d-c9f2-48b7-9a58-51001d1f1ad0" />
 
+---
 
 Scop is a Graphic & Gaming specialty project of 42 that is a basic GPU rendering with OpenGL.
 
