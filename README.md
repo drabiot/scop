@@ -1,10 +1,11 @@
 <div align="center">
   <h1> 🎥 Scop
-  </h1>div
+  </h1>
+</div>
 
 
 <div align="center">
-<img width="200" height="170" alt="Screenshot from 2026-01-22 17-50-47" src="https://github.com/user-attachments/assets/cb338c1d-c9f2-48b7-9a58-51001d1f1ad0" />
+   <img width="200" height="170" alt="Screenshot from 2026-01-22 17-50-47" src="https://github.com/user-attachments/assets/cb338c1d-c9f2-48b7-9a58-51001d1f1ad0" />
 </div>
 
 ---
