@@ -16,6 +16,7 @@ This mini project is a first step towards using OpenGL.
 
 ![Static Badge](https://img.shields.io/badge/os-linux-orange)
 ![Static Badge](https://img.shields.io/badge/language-c%2B%2B17-blue)
+![Static Badge](https://img.shields.io/badge/API-OpenGL%203.0-green)
 
 
 ## Demo
