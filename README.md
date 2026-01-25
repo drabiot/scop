@@ -21,9 +21,7 @@ This mini project is a first step towards using OpenGL.
 
 ## Demo
 
-<div align="center">
-  ![ezgif-714344b923f93d0e](https://github.com/user-attachments/assets/71c86289-7fda-4fcf-b62b-40aff71bc386)
-</div>
+![ezgif-714344b923f93d0e](https://github.com/user-attachments/assets/71c86289-7fda-4fcf-b62b-40aff71bc386)
 
 ## Run Locally
 
